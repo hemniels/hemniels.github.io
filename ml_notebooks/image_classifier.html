@@ -14607,7 +14607,7 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[6]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[389]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
@@ -14615,10 +14615,14 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
 <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
 <span class="kn">import</span> <span class="nn">tensorflow</span> <span class="k">as</span> <span class="nn">tf</span>
 <span class="kn">from</span> <span class="nn">tensorflow</span> <span class="kn">import</span> <span class="n">keras</span>
-<span class="kn">from</span> <span class="nn">keras.models</span> <span class="kn">import</span> <span class="n">Sequential</span>
-<span class="kn">from</span> <span class="nn">keras.layers</span> <span class="kn">import</span> <span class="n">Dense</span><span class="p">,</span> <span class="n">Conv2D</span><span class="p">,</span> <span class="n">MaxPooling2D</span><span class="p">,</span> <span class="n">Dropout</span><span class="p">,</span> <span class="n">Flatten</span>
-<span class="kn">from</span> <span class="nn">keras.utils</span> <span class="kn">import</span> <span class="n">to_categorical</span>
+<span class="kn">from</span> <span class="nn">tensorflow.keras</span> <span class="kn">import</span> <span class="n">regularizers</span>
 <span class="kn">from</span> <span class="nn">tensorflow.keras.datasets</span> <span class="kn">import</span> <span class="n">cifar10</span>
+<span class="kn">from</span> <span class="nn">tensorflow.keras.layers</span> <span class="kn">import</span> <span class="n">Conv2D</span><span class="p">,</span> <span class="n">MaxPooling2D</span><span class="p">,</span> <span class="n">Dropout</span><span class="p">,</span> <span class="n">DepthwiseConv2D</span><span class="p">,</span> <span class="n">BatchNormalization</span>
+<span class="kn">from</span> <span class="nn">keras.optimizers</span> <span class="kn">import</span> <span class="n">RMSprop</span>
+<span class="kn">from</span> <span class="nn">keras.models</span> <span class="kn">import</span> <span class="n">Sequential</span>
+<span class="kn">from</span> <span class="nn">keras.utils</span> <span class="kn">import</span> <span class="n">to_categorical</span><span class="p">,</span> <span class="n">np_utils</span>
+
+<span class="kn">from</span> <span class="nn">sklearn.metrics</span> <span class="kn">import</span> <span class="n">confusion_matrix</span>
 <span class="kn">import</span> <span class="nn">warnings</span>
 <span class="n">warnings</span><span class="o">.</span><span class="n">filterwarnings</span><span class="p">(</span><span class="s1">&#39;ignore&#39;</span><span class="p">)</span>
 </pre></div>
@@ -14633,12 +14637,14 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[4]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[390]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">),</span> <span class="p">(</span><span class="n">X_test</span><span class="p">,</span> <span class="n">y_test</span><span class="p">)</span> <span class="o">=</span> <span class="n">cifar10</span><span class="o">.</span><span class="n">load_data</span><span class="p">()</span>
-<span class="c1">#X_train = X_train.reshape(X_train.shape[0], 32, 32, 3)</span>
-<span class="c1">#X_test = X_test.reshape(X_test.shape[0], 32, 32, 3)</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">load_cifar10</span><span class="p">():</span>
+    <span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">),</span> <span class="p">(</span><span class="n">X_test</span><span class="p">,</span> <span class="n">y_test</span><span class="p">)</span> <span class="o">=</span> <span class="n">cifar10</span><span class="o">.</span><span class="n">load_data</span><span class="p">()</span>
+    <span class="k">return</span> <span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">),</span> <span class="p">(</span><span class="n">X_test</span><span class="p">,</span> <span class="n">y_test</span><span class="p">)</span>
+
+<span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">),</span> <span class="p">(</span><span class="n">X_test</span><span class="p">,</span> <span class="n">y_test</span><span class="p">)</span> <span class="o">=</span> <span class="n">load_cifar10</span><span class="p">()</span>
 
 <span class="c1">#Exploration der Form unserer Datensaetze</span>
 <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Training Datensatz Shape:&#39;</span><span class="p">,</span> <span class="n">X_train</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
@@ -14739,55 +14745,82 @@ class="
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[5]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[391]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#Umwandlung von y_train/y_test in onehot encoded format</span>
-<span class="n">y_train</span> <span class="o">=</span> <span class="n">to_categorical</span><span class="p">(</span><span class="n">y_train</span><span class="p">,</span> <span class="n">num_classes</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
-<span class="n">y_test</span> <span class="o">=</span> <span class="n">to_categorical</span><span class="p">(</span><span class="n">y_test</span><span class="p">,</span> <span class="n">num_classes</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Hilfsfunktionen:</span>
+<span class="c1">#   1. y_train/y_test in OneHot Encoding Format umwandeln</span>
+<span class="c1">#   2. Layer fuer unser CNN erstellen</span>
+<span class="c1">#   3. Fully Connected Layer zu unserem CNN hinzufuegen</span>
+<span class="c1">#   4. eine Trainingsmethode um das CNN zu trainieren</span>
+
+<span class="k">def</span> <span class="nf">to_OneHot</span><span class="p">(</span><span class="n">y_train</span><span class="p">,</span> <span class="n">y_test</span><span class="p">,</span> <span class="n">num_classes</span><span class="o">=</span><span class="mi">10</span><span class="p">):</span>
+    <span class="n">y_train</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">to_categorical</span><span class="p">(</span><span class="n">y_train</span><span class="p">,</span> <span class="n">num_classes</span><span class="p">)</span>
+    <span class="n">y_test</span>  <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">to_categorical</span><span class="p">(</span><span class="n">y_test</span><span class="p">,</span> <span class="n">num_classes</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">y_train</span><span class="p">,</span> <span class="n">y_test</span>
+
+<span class="n">X_train</span> <span class="o">=</span> <span class="n">X_train</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s1">&#39;float32&#39;</span><span class="p">)</span>
+<span class="n">X_test</span>  <span class="o">=</span> <span class="n">X_test</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s1">&#39;float32&#39;</span><span class="p">)</span>
+<span class="n">X_train</span><span class="p">,</span> <span class="n">X_test</span> <span class="o">=</span> <span class="n">X_train</span> <span class="o">/</span> <span class="mi">255</span><span class="p">,</span> <span class="n">X_test</span> <span class="o">/</span> <span class="mi">255</span>
+
+<span class="n">y_train</span><span class="p">,</span> <span class="n">y_test</span> <span class="o">=</span> <span class="n">to_OneHot</span><span class="p">(</span><span class="n">y_train</span><span class="p">,</span> <span class="n">y_test</span><span class="p">)</span>
+<span class="c1">#print(y_train.shape)</span>
+<span class="c1">#print(y_test.shape)</span>
 <span class="n">input_shape</span> <span class="o">=</span> <span class="n">X_train</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span>
 
+<span class="k">def</span> <span class="nf">add_Single_Layer</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">num_filters</span><span class="p">,</span> <span class="n">kernel_size</span><span class="o">=</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="mi">3</span><span class="p">),</span> <span class="n">activation</span><span class="o">=</span><span class="s1">&#39;relu&#39;</span><span class="p">,</span> <span class="n">input_shape</span><span class="o">=</span><span class="n">input_shape</span><span class="p">):</span>
+    <span class="n">model</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">BatchNormalization</span><span class="p">())</span>
+    <span class="n">model</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">Conv2D</span><span class="p">(</span><span class="n">num_filters</span><span class="p">,</span> <span class="n">kernel_size</span><span class="p">,</span> <span class="n">padding</span><span class="o">=</span><span class="s1">&#39;same&#39;</span><span class="p">,</span> <span class="n">activation</span><span class="o">=</span><span class="n">activation</span><span class="p">,</span> <span class="n">kernel_regularizer</span><span class="o">=</span><span class="n">regularizers</span><span class="o">.</span><span class="n">l2</span><span class="p">(</span><span class="mf">0.0001</span><span class="p">)))</span>
+    <span class="n">model</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">MaxPooling2D</span><span class="p">(</span><span class="n">pool_size</span><span class="o">=</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="mi">2</span><span class="p">),</span> <span class="n">padding</span><span class="o">=</span><span class="s1">&#39;same&#39;</span><span class="p">))</span>
+    <span class="n">model</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">Dropout</span><span class="p">(</span><span class="mf">0.2</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">model</span>
+
+
+<span class="k">def</span> <span class="nf">add_Layer_Block</span><span class="p">(</span><span class="n">num_blocks</span><span class="p">,</span> <span class="n">model</span><span class="p">,</span> <span class="n">num_filters</span><span class="p">,</span> <span class="n">kernel_size</span><span class="o">=</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="mi">3</span><span class="p">),</span> <span class="n">activation</span><span class="o">=</span><span class="s1">&#39;relu&#39;</span><span class="p">,</span> <span class="n">input_shape</span><span class="o">=</span><span class="n">input_shape</span><span class="p">):</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_blocks</span><span class="p">):</span>
+        <span class="n">model</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">BatchNormalization</span><span class="p">())</span>
+        <span class="n">model</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">Conv2D</span><span class="p">(</span><span class="n">num_filters</span><span class="p">,</span> <span class="n">kernel_size</span><span class="p">,</span> <span class="n">padding</span><span class="o">=</span><span class="s1">&#39;same&#39;</span><span class="p">,</span> <span class="n">activation</span><span class="o">=</span><span class="n">activation</span><span class="p">,</span> <span class="n">kernel_regularizer</span><span class="o">=</span><span class="n">regularizers</span><span class="o">.</span><span class="n">l2</span><span class="p">(</span><span class="mf">0.0001</span><span class="p">)))</span>
+        <span class="n">model</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">BatchNormalization</span><span class="p">())</span>
+        <span class="n">model</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">Conv2D</span><span class="p">(</span><span class="n">num_filters</span><span class="p">,</span> <span class="n">kernel_size</span><span class="p">,</span> <span class="n">padding</span><span class="o">=</span><span class="s1">&#39;same&#39;</span><span class="p">,</span> <span class="n">activation</span><span class="o">=</span><span class="n">activation</span><span class="p">,</span> <span class="n">kernel_regularizer</span><span class="o">=</span><span class="n">regularizers</span><span class="o">.</span><span class="n">l2</span><span class="p">(</span><span class="mf">0.0001</span><span class="p">)))</span>
+        <span class="n">model</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">MaxPooling2D</span><span class="p">(</span><span class="n">pool_size</span><span class="o">=</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="mi">2</span><span class="p">),</span> <span class="n">padding</span><span class="o">=</span><span class="s1">&#39;same&#39;</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">model</span>
+
+<span class="k">def</span> <span class="nf">add_fullyConnected</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">num_classes</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">input_shape</span><span class="o">=</span><span class="n">input_shape</span><span class="p">,</span> <span class="n">num_layers</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">num_neurons</span><span class="o">=</span><span class="mi">128</span><span class="p">,</span> <span class="n">activation</span><span class="o">=</span><span class="s1">&#39;relu&#39;</span><span class="p">,</span> <span class="n">dropout_rate</span><span class="o">=</span><span class="mf">0.2</span><span class="p">):</span>
+    <span class="c1"># Input layer</span>
+    <span class="n">model</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">Flatten</span><span class="p">(</span><span class="n">input_shape</span><span class="o">=</span><span class="n">input_shape</span><span class="p">))</span>
+    <span class="c1"># Hidden layers</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_layers</span><span class="p">):</span>
+        <span class="n">model</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">Dense</span><span class="p">(</span><span class="n">num_neurons</span> <span class="o">*</span> <span class="mi">4</span><span class="p">,</span> <span class="n">activation</span><span class="o">=</span><span class="n">activation</span><span class="p">))</span>
+        <span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">BatchNormalization</span><span class="p">()</span>
+        <span class="n">model</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">Dropout</span><span class="p">(</span><span class="n">dropout_rate</span><span class="p">))</span>
+        <span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">BatchNormalization</span><span class="p">()</span>
+    <span class="c1"># Output layer</span>
+    <span class="n">model</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">Dense</span><span class="p">(</span><span class="n">num_classes</span><span class="p">,</span> <span class="n">activation</span><span class="o">=</span><span class="s1">&#39;softmax&#39;</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">model</span>
+
+<span class="k">def</span> <span class="nf">train_cnn</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">,</span> <span class="n">X_test</span><span class="p">,</span> <span class="n">y_test</span><span class="p">,</span> <span class="n">epochs</span><span class="o">=</span><span class="mi">40</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="mi">64</span><span class="p">):</span>
+    <span class="k">with</span> <span class="n">tf</span><span class="o">.</span><span class="n">device</span><span class="p">(</span><span class="s1">&#39;/gpu:0&#39;</span><span class="p">):</span>
+        <span class="n">weight_decay</span> <span class="o">=</span> <span class="mf">1e-4</span>
+        <span class="n">optimizer</span> <span class="o">=</span> <span class="n">RMSprop</span><span class="p">(</span><span class="n">lr</span><span class="o">=</span><span class="mf">0.001</span><span class="p">,</span> <span class="n">decay</span><span class="o">=</span><span class="n">weight_decay</span><span class="p">)</span>
+        <span class="n">model</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="n">loss</span><span class="o">=</span><span class="s1">&#39;categorical_crossentropy&#39;</span><span class="p">,</span> <span class="n">optimizer</span><span class="o">=</span><span class="n">optimizer</span><span class="p">,</span> <span class="n">metrics</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;accuracy&#39;</span><span class="p">])</span>
+        <span class="n">history</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="n">batch_size</span><span class="p">,</span> <span class="n">epochs</span><span class="o">=</span><span class="n">epochs</span><span class="p">,</span> <span class="n">validation_data</span><span class="o">=</span><span class="p">(</span><span class="n">X_test</span><span class="p">,</span> <span class="n">y_test</span><span class="p">))</span>
+        <span class="n">test_loss</span><span class="p">,</span> <span class="n">test_acc</span> <span class="o">=</span> <span class="n">history</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">evaluate</span><span class="p">(</span><span class="n">X_test</span><span class="p">,</span> <span class="n">y_test</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Test accuracy:&#39;</span><span class="p">,</span> <span class="n">test_acc</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">model</span>
+
+
 <span class="c1">#Erstellung unseres Classifier Models als Sequentielles Model</span>
-<span class="n">img_classifier</span> <span class="o">=</span> <span class="n">Sequential</span><span class="p">()</span>
+<span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
+    <span class="c1">#model init, training, eval</span>
+    <span class="n">img_classifier</span> <span class="o">=</span> <span class="n">Sequential</span><span class="p">()</span>
+    <span class="n">img_classifier</span> <span class="o">=</span> <span class="n">add_Layer_Block</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">img_classifier</span><span class="p">,</span> <span class="mi">32</span><span class="p">)</span>
+    <span class="n">img_classifier</span> <span class="o">=</span> <span class="n">add_Layer_Block</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">img_classifier</span><span class="p">,</span> <span class="mi">64</span><span class="p">)</span>
+    <span class="n">img_classifier</span> <span class="o">=</span> <span class="n">add_Single_Layer</span><span class="p">(</span><span class="n">img_classifier</span><span class="p">,</span><span class="mi">128</span><span class="p">)</span>
+    <span class="n">img_classifier</span> <span class="o">=</span> <span class="n">add_fullyConnected</span><span class="p">(</span><span class="n">img_classifier</span><span class="p">)</span>
+    <span class="n">img_classifier</span> <span class="o">=</span> <span class="n">train_cnn</span><span class="p">(</span><span class="n">img_classifier</span><span class="p">,</span> <span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">,</span> <span class="n">X_test</span><span class="p">,</span> <span class="n">y_test</span><span class="p">)</span>
 
-<span class="c1"># Block 1</span>
-<span class="n">img_classifier</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">Conv2D</span><span class="p">(</span><span class="mi">32</span><span class="p">,</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="mi">3</span><span class="p">),</span> <span class="n">padding</span><span class="o">=</span><span class="s1">&#39;same&#39;</span><span class="p">,</span> <span class="n">activation</span><span class="o">=</span><span class="s1">&#39;relu&#39;</span><span class="p">,</span> <span class="n">input_shape</span><span class="o">=</span><span class="n">input_shape</span><span class="p">))</span>
-<span class="n">img_classifier</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">Conv2D</span><span class="p">(</span><span class="mi">32</span><span class="p">,</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="mi">3</span><span class="p">),</span> <span class="n">padding</span><span class="o">=</span><span class="s1">&#39;same&#39;</span><span class="p">,</span> <span class="n">activation</span><span class="o">=</span><span class="s1">&#39;relu&#39;</span><span class="p">))</span>
-<span class="n">img_classifier</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">MaxPooling2D</span><span class="p">(</span><span class="n">pool_size</span><span class="o">=</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="mi">2</span><span class="p">)))</span>
-<span class="n">img_classifier</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">Dropout</span><span class="p">(</span><span class="mf">0.25</span><span class="p">))</span>
-
-<span class="c1"># Block 2</span>
-<span class="n">img_classifier</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">Conv2D</span><span class="p">(</span><span class="mi">64</span><span class="p">,</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="mi">3</span><span class="p">),</span> <span class="n">padding</span><span class="o">=</span><span class="s1">&#39;same&#39;</span><span class="p">,</span> <span class="n">activation</span><span class="o">=</span><span class="s1">&#39;relu&#39;</span><span class="p">))</span>
-<span class="n">img_classifier</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">Conv2D</span><span class="p">(</span><span class="mi">64</span><span class="p">,</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="mi">3</span><span class="p">),</span> <span class="n">padding</span><span class="o">=</span><span class="s1">&#39;same&#39;</span><span class="p">,</span> <span class="n">activation</span><span class="o">=</span><span class="s1">&#39;relu&#39;</span><span class="p">))</span>
-<span class="n">img_classifier</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">MaxPooling2D</span><span class="p">(</span><span class="n">pool_size</span><span class="o">=</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="mi">2</span><span class="p">)))</span>
-<span class="n">img_classifier</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">Dropout</span><span class="p">(</span><span class="mf">0.25</span><span class="p">))</span>
-
-<span class="c1"># Block 3</span>
-<span class="n">img_classifier</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">Conv2D</span><span class="p">(</span><span class="mi">128</span><span class="p">,</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="mi">3</span><span class="p">),</span> <span class="n">padding</span><span class="o">=</span><span class="s1">&#39;same&#39;</span><span class="p">,</span> <span class="n">activation</span><span class="o">=</span><span class="s1">&#39;relu&#39;</span><span class="p">))</span>
-<span class="n">img_classifier</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">Conv2D</span><span class="p">(</span><span class="mi">128</span><span class="p">,</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="mi">3</span><span class="p">),</span> <span class="n">padding</span><span class="o">=</span><span class="s1">&#39;same&#39;</span><span class="p">,</span> <span class="n">activation</span><span class="o">=</span><span class="s1">&#39;relu&#39;</span><span class="p">))</span>
-<span class="n">img_classifier</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">MaxPooling2D</span><span class="p">(</span><span class="n">pool_size</span><span class="o">=</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="mi">2</span><span class="p">)))</span>
-<span class="n">img_classifier</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">Dropout</span><span class="p">(</span><span class="mf">0.25</span><span class="p">))</span>
-
-<span class="c1"># Fully connected layers</span>
-<span class="n">img_classifier</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">Flatten</span><span class="p">())</span>
-<span class="n">img_classifier</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">Dense</span><span class="p">(</span><span class="mi">512</span><span class="p">,</span> <span class="n">activation</span><span class="o">=</span><span class="s1">&#39;relu&#39;</span><span class="p">))</span>
-<span class="n">img_classifier</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">Dropout</span><span class="p">(</span><span class="mf">0.25</span><span class="p">))</span>
-<span class="n">img_classifier</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">Dense</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="n">activation</span><span class="o">=</span><span class="s1">&#39;softmax&#39;</span><span class="p">))</span>
-
-
-<span class="c1">#Compile des Models</span>
-<span class="n">img_classifier</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="n">loss</span><span class="o">=</span><span class="s1">&#39;categorical_crossentropy&#39;</span><span class="p">,</span>
-                       <span class="n">optimizer</span><span class="o">=</span><span class="s1">&#39;adam&#39;</span><span class="p">,</span>
-                       <span class="n">metrics</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;accuracy&#39;</span><span class="p">])</span>
-
-<span class="c1">#Model fit</span>
-<span class="n">history</span> <span class="o">=</span> <span class="n">img_classifier</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">,</span>
-                             <span class="n">batch_size</span><span class="o">=</span><span class="mi">64</span><span class="p">,</span>
-                             <span class="n">epochs</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span>
-                             <span class="n">validation_data</span><span class="o">=</span><span class="p">(</span><span class="n">X_test</span><span class="p">,</span> <span class="n">y_test</span><span class="p">))</span>
-
-<span class="n">test_loss</span><span class="p">,</span> <span class="n">test_acc</span> <span class="o">=</span> <span class="n">img_classifier</span><span class="o">.</span><span class="n">evaluate</span><span class="p">(</span><span class="n">X_test</span><span class="p">,</span> <span class="n">y_test</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Test Genauigkeit:&#39;</span><span class="p">,</span> <span class="n">test_acc</span><span class="p">)</span>
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
+    <span class="n">main</span><span class="p">()</span>
 </pre></div>
 
      </div>
@@ -14806,61 +14839,89 @@ class="
     <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
 
 
-<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="application/vnd.jupyter.stderr">
-<pre>2023-04-26 16:00:27.159063: I tensorflow/compiler/xla/stream_executor/cuda/cuda_gpu_executor.cc:996] successful NUMA node read from SysFS had negative value (-1), but there must be at least one NUMA node, so returning NUMA node zero. See more at https://github.com/torvalds/linux/blob/v6.0/Documentation/ABI/testing/sysfs-bus-pci#L344-L355
-2023-04-26 16:00:27.210571: W tensorflow/core/common_runtime/gpu/gpu_device.cc:1956] Cannot dlopen some GPU libraries. Please make sure the missing libraries mentioned above are installed properly if you would like to use GPU. Follow the guide at https://www.tensorflow.org/install/gpu for how to download and setup the required libraries for your platform.
-Skipping registering GPU devices...
-</pre>
-</div>
-</div>
-<div class="jp-OutputArea-child">
-    
-    <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
-
-
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain">
-<pre>Epoch 1/20
-782/782 [==============================] - 57s 72ms/step - loss: 1.8100 - accuracy: 0.3594 - val_loss: 1.5030 - val_accuracy: 0.4814
-Epoch 2/20
-782/782 [==============================] - 60s 77ms/step - loss: 1.2923 - accuracy: 0.5321 - val_loss: 1.1297 - val_accuracy: 0.5886
-Epoch 3/20
-782/782 [==============================] - 70s 90ms/step - loss: 1.1130 - accuracy: 0.6057 - val_loss: 0.9655 - val_accuracy: 0.6605
-Epoch 4/20
-782/782 [==============================] - 70s 90ms/step - loss: 1.0063 - accuracy: 0.6461 - val_loss: 0.8698 - val_accuracy: 0.6979
-Epoch 5/20
-782/782 [==============================] - 74s 95ms/step - loss: 0.9382 - accuracy: 0.6703 - val_loss: 0.8821 - val_accuracy: 0.6951
-Epoch 6/20
-782/782 [==============================] - 70s 90ms/step - loss: 0.8922 - accuracy: 0.6870 - val_loss: 0.8795 - val_accuracy: 0.7018
-Epoch 7/20
-782/782 [==============================] - 71s 91ms/step - loss: 0.8496 - accuracy: 0.7024 - val_loss: 0.7996 - val_accuracy: 0.7205
-Epoch 8/20
-782/782 [==============================] - 65s 83ms/step - loss: 0.8144 - accuracy: 0.7143 - val_loss: 0.7487 - val_accuracy: 0.7411
-Epoch 9/20
-782/782 [==============================] - 65s 83ms/step - loss: 0.7941 - accuracy: 0.7238 - val_loss: 0.7855 - val_accuracy: 0.7271
-Epoch 10/20
-782/782 [==============================] - 65s 84ms/step - loss: 0.7728 - accuracy: 0.7312 - val_loss: 0.7874 - val_accuracy: 0.7305
-Epoch 11/20
-782/782 [==============================] - 65s 83ms/step - loss: 0.7572 - accuracy: 0.7366 - val_loss: 0.7983 - val_accuracy: 0.7282
-Epoch 12/20
-782/782 [==============================] - 65s 84ms/step - loss: 0.7481 - accuracy: 0.7394 - val_loss: 0.7711 - val_accuracy: 0.7378
-Epoch 13/20
-782/782 [==============================] - 65s 84ms/step - loss: 0.7265 - accuracy: 0.7470 - val_loss: 0.7604 - val_accuracy: 0.7446
-Epoch 14/20
-782/782 [==============================] - 65s 84ms/step - loss: 0.7186 - accuracy: 0.7508 - val_loss: 0.7364 - val_accuracy: 0.7502
-Epoch 15/20
-782/782 [==============================] - 65s 84ms/step - loss: 0.7129 - accuracy: 0.7533 - val_loss: 0.7239 - val_accuracy: 0.7552
-Epoch 16/20
-782/782 [==============================] - 65s 84ms/step - loss: 0.6993 - accuracy: 0.7584 - val_loss: 0.7468 - val_accuracy: 0.7460
-Epoch 17/20
-782/782 [==============================] - 65s 84ms/step - loss: 0.6887 - accuracy: 0.7607 - val_loss: 0.7346 - val_accuracy: 0.7514
-Epoch 18/20
-782/782 [==============================] - 65s 84ms/step - loss: 0.6859 - accuracy: 0.7617 - val_loss: 0.7412 - val_accuracy: 0.7520
-Epoch 19/20
-782/782 [==============================] - 65s 84ms/step - loss: 0.6794 - accuracy: 0.7658 - val_loss: 0.8488 - val_accuracy: 0.7230
-Epoch 20/20
-782/782 [==============================] - 67s 86ms/step - loss: 0.6698 - accuracy: 0.7694 - val_loss: 0.7376 - val_accuracy: 0.7497
-313/313 [==============================] - 4s 14ms/step - loss: 0.7376 - accuracy: 0.7497
-Test Genauigkeit: 0.7497000098228455
+<pre>Epoch 1/40
+782/782 [==============================] - 56s 70ms/step - loss: 1.4622 - accuracy: 0.4881 - val_loss: 1.3530 - val_accuracy: 0.5592
+Epoch 2/40
+782/782 [==============================] - 57s 73ms/step - loss: 0.9774 - accuracy: 0.6771 - val_loss: 1.1592 - val_accuracy: 0.6490
+Epoch 3/40
+782/782 [==============================] - 63s 81ms/step - loss: 0.8457 - accuracy: 0.7295 - val_loss: 0.8287 - val_accuracy: 0.7403
+Epoch 4/40
+782/782 [==============================] - 61s 78ms/step - loss: 0.7951 - accuracy: 0.7525 - val_loss: 0.7607 - val_accuracy: 0.7557
+Epoch 5/40
+782/782 [==============================] - 62s 79ms/step - loss: 0.7530 - accuracy: 0.7698 - val_loss: 0.8294 - val_accuracy: 0.7492
+Epoch 6/40
+782/782 [==============================] - 71s 90ms/step - loss: 0.7233 - accuracy: 0.7813 - val_loss: 0.8402 - val_accuracy: 0.7381
+Epoch 7/40
+782/782 [==============================] - 58s 75ms/step - loss: 0.6957 - accuracy: 0.7954 - val_loss: 0.7470 - val_accuracy: 0.7791
+Epoch 8/40
+782/782 [==============================] - 59s 75ms/step - loss: 0.6647 - accuracy: 0.8028 - val_loss: 0.8540 - val_accuracy: 0.7520
+Epoch 9/40
+782/782 [==============================] - 58s 75ms/step - loss: 0.6458 - accuracy: 0.8127 - val_loss: 0.6706 - val_accuracy: 0.8025
+Epoch 10/40
+782/782 [==============================] - 58s 75ms/step - loss: 0.6348 - accuracy: 0.8181 - val_loss: 0.7501 - val_accuracy: 0.7925
+Epoch 11/40
+782/782 [==============================] - 59s 75ms/step - loss: 0.6174 - accuracy: 0.8265 - val_loss: 0.8179 - val_accuracy: 0.7698
+Epoch 12/40
+782/782 [==============================] - 59s 75ms/step - loss: 0.6067 - accuracy: 0.8314 - val_loss: 0.9081 - val_accuracy: 0.7814
+Epoch 13/40
+782/782 [==============================] - 59s 75ms/step - loss: 0.5941 - accuracy: 0.8361 - val_loss: 0.7816 - val_accuracy: 0.7819
+Epoch 14/40
+782/782 [==============================] - 59s 75ms/step - loss: 0.5814 - accuracy: 0.8428 - val_loss: 0.7393 - val_accuracy: 0.7935
+Epoch 15/40
+782/782 [==============================] - 59s 75ms/step - loss: 0.5672 - accuracy: 0.8469 - val_loss: 0.6957 - val_accuracy: 0.7921
+Epoch 16/40
+782/782 [==============================] - 59s 75ms/step - loss: 0.5569 - accuracy: 0.8496 - val_loss: 0.6922 - val_accuracy: 0.8058
+Epoch 17/40
+782/782 [==============================] - 59s 75ms/step - loss: 0.5583 - accuracy: 0.8531 - val_loss: 0.8542 - val_accuracy: 0.7851
+Epoch 18/40
+782/782 [==============================] - 59s 75ms/step - loss: 0.5512 - accuracy: 0.8549 - val_loss: 0.7424 - val_accuracy: 0.8085
+Epoch 19/40
+782/782 [==============================] - 59s 75ms/step - loss: 0.5491 - accuracy: 0.8554 - val_loss: 0.9569 - val_accuracy: 0.7751
+Epoch 20/40
+782/782 [==============================] - 59s 75ms/step - loss: 0.5339 - accuracy: 0.8587 - val_loss: 0.7069 - val_accuracy: 0.8098
+Epoch 21/40
+782/782 [==============================] - 59s 75ms/step - loss: 0.5271 - accuracy: 0.8612 - val_loss: 0.8095 - val_accuracy: 0.8067
+Epoch 22/40
+782/782 [==============================] - 59s 75ms/step - loss: 0.5100 - accuracy: 0.8697 - val_loss: 0.8394 - val_accuracy: 0.7760
+Epoch 23/40
+782/782 [==============================] - 59s 75ms/step - loss: 0.5161 - accuracy: 0.8668 - val_loss: 0.6854 - val_accuracy: 0.8102
+Epoch 24/40
+782/782 [==============================] - 59s 75ms/step - loss: 0.5062 - accuracy: 0.8698 - val_loss: 0.7807 - val_accuracy: 0.7888
+Epoch 25/40
+782/782 [==============================] - 59s 75ms/step - loss: 0.4963 - accuracy: 0.8736 - val_loss: 0.7900 - val_accuracy: 0.8087
+Epoch 26/40
+782/782 [==============================] - 59s 75ms/step - loss: 0.5032 - accuracy: 0.8740 - val_loss: 0.7424 - val_accuracy: 0.8145
+Epoch 27/40
+782/782 [==============================] - 59s 75ms/step - loss: 0.4952 - accuracy: 0.8754 - val_loss: 0.7425 - val_accuracy: 0.8164
+Epoch 28/40
+782/782 [==============================] - 59s 75ms/step - loss: 0.4883 - accuracy: 0.8791 - val_loss: 0.8391 - val_accuracy: 0.7901
+Epoch 29/40
+782/782 [==============================] - 59s 75ms/step - loss: 0.4873 - accuracy: 0.8778 - val_loss: 0.7456 - val_accuracy: 0.8195
+Epoch 30/40
+782/782 [==============================] - 59s 75ms/step - loss: 0.4844 - accuracy: 0.8797 - val_loss: 0.8426 - val_accuracy: 0.7975
+Epoch 31/40
+782/782 [==============================] - 59s 75ms/step - loss: 0.4712 - accuracy: 0.8847 - val_loss: 1.0110 - val_accuracy: 0.7838
+Epoch 32/40
+782/782 [==============================] - 59s 75ms/step - loss: 0.4672 - accuracy: 0.8860 - val_loss: 0.8282 - val_accuracy: 0.8097
+Epoch 33/40
+782/782 [==============================] - 59s 75ms/step - loss: 0.4610 - accuracy: 0.8853 - val_loss: 0.7887 - val_accuracy: 0.8094
+Epoch 34/40
+782/782 [==============================] - 59s 75ms/step - loss: 0.4540 - accuracy: 0.8898 - val_loss: 0.7886 - val_accuracy: 0.8006
+Epoch 35/40
+782/782 [==============================] - 58s 75ms/step - loss: 0.4563 - accuracy: 0.8898 - val_loss: 0.8538 - val_accuracy: 0.7865
+Epoch 36/40
+782/782 [==============================] - 59s 75ms/step - loss: 0.4528 - accuracy: 0.8905 - val_loss: 1.1487 - val_accuracy: 0.7858
+Epoch 37/40
+782/782 [==============================] - 59s 75ms/step - loss: 0.4386 - accuracy: 0.8947 - val_loss: 1.1092 - val_accuracy: 0.7151
+Epoch 38/40
+782/782 [==============================] - 59s 75ms/step - loss: 0.4469 - accuracy: 0.8926 - val_loss: 0.8794 - val_accuracy: 0.8084
+Epoch 39/40
+782/782 [==============================] - 58s 75ms/step - loss: 0.4411 - accuracy: 0.8951 - val_loss: 0.8444 - val_accuracy: 0.7977
+Epoch 40/40
+782/782 [==============================] - 59s 75ms/step - loss: 0.4450 - accuracy: 0.8954 - val_loss: 0.8910 - val_accuracy: 0.7690
+313/313 [==============================] - 4s 13ms/step - loss: 0.8910 - accuracy: 0.7690
+Test accuracy: 0.7689999938011169
 </pre>
 </div>
 </div>
@@ -14869,6 +14930,22 @@ Test Genauigkeit: 0.7497000098228455
 
 </div>
 
+</div>
+<div  class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<h1 id="Analyse-der-Ergebnisse">Analyse der Ergebnisse<a class="anchor-link" href="#Analyse-der-Ergebnisse">&#182;</a></h1><p>Das Modell erreichte eine Trainingsgenauigkeit von 89,54% und eine Validierungsgenauigkeit von 76,90%. Dies deutet darauf hin, dass das Modell an das Trainingsdatenset überangepasst ist, da eine signifikante Leistungsabnahme auf dem Validierungsset zu verzeichnen ist.</p>
+<p>Die Verlustfunktion nahm während des Trainingsprozesses stetig ab, was darauf hinweist, dass das Modell im Laufe der Zeit lernte und sich verbesserte. Die Validierungsverluste nahmen jedoch nicht mit der gleichen Rate ab, was erneut darauf hindeutet, dass das Modell zu sehr auf die Trainingsdaten überangepasst war.</p>
+<p>Die Trainingsgenauigkeit von 89,54% ist relativ hoch, aber die Validierungsgenauigkeit von 76,90% ist nicht so beeindruckend. Dies deutet darauf hin, dass das Modell nicht gut generalisiert, wenn es auf neue Daten angewendet wird. Die Leistung könnte möglicherweise verbessert werden, indem man die Komplexität des Modells reduziert oder die Größe des Trainingsdatensatzes erhöht.</p>
+<p>Es ist erwähnenswert, dass der CIFAR10-Datensatz ein herausfordernder Datensatz ist, der 10 Klassen von Bildern mit erheblicher visueller Variabilität enthält. Eine hohe Genauigkeit auf diesem Datensatz zu erreichen, ist schwierig und eine Genauigkeit von 76,90% ist dennoch eine respektable Leistung.</p>
+<p>Zusammenfassend lässt sich sagen, dass das Modell eine relativ hohe Trainingsgenauigkeit erreicht hat, aber nicht in der Lage war, gut auf neue Daten zu generalisieren, wie durch die niedrigere Validierungsgenauigkeit belegt wird. Weitere Experimente mit verschiedenen Modellarchitekturen oder Trainingsmethoden können erforderlich sein, um die Leistung des Modells auf dem CIFAR10-Datensatz zu verbessern.</p>
+
+</div>
+</div>
+</div>
 </div>
 <div  class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
 <div class="jp-Cell-inputWrapper">
