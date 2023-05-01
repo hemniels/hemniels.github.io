@@ -14602,6 +14602,27 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
 </div>
 </div>
 </div>
+</div>
+<div  class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<h2 id="Einleitung">Einleitung<a class="anchor-link" href="#Einleitung">&#182;</a></h2><p>In diesem Projekt widmen wir uns dem allseits bekannten cifar10 Datensatz. Dieser beinhaltet 60000 Bilder in 32x32 Pixel mit 10 unterschiedlichen Klassen. Dieser Datensatz ist ein guter Startpunkt im Machine Learning um eine effiziente CNN-Archtiektur zu erproben. 
+Der Ansatz den wir hier gewaehlt haben ist eine CNN-Architektur, mit mehreren Schichten. Zu Beginn wollen wir aber unseren Datensatz ergruenden und auf mehrere Weisen aufschluesseln um zu erkunden wie die Bilder denn aussehen, wie viele Klassen es gibt und vor allem wie diese Klassen % im Datensatz vorkommen.</p>
+<h3 id="Inhalt">Inhalt<a class="anchor-link" href="#Inhalt">&#182;</a></h3><ol = type"1">
+    <li>Daten Exploration</li>
+    <li>Netzwerk Architektur</li>
+        <ol type="1">
+            <li>Trainingsfunktion</li>
+        </ol>
+    <li>Analyse der Ergebnisse</li>
+</ol>
+
+</div>
+</div>
+</div>
 </div><div  class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
@@ -14632,6 +14653,21 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
 </div>
 </div>
 
+</div>
+<div  class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<h2 id="1.-Daten-Exploration">1. Daten Exploration<a class="anchor-link" href="#1.-Daten-Exploration">&#182;</a></h2><p>In diesem Abschnitt widmen wir uns dem Datensatz. Zu beginn laden wir unseren cifar10-Datensatz mit einer eigenen Methode. Dies ist best practice, da wir in dem Fall, dass wir mit einem nicht lokal ausfuehrbaren/speicherbaren Datensatz arbeiten, oder in einem zukuenftigen Projekt cifar10 erneut laden moechten.<br />
+Anschliessend lassen wir auf die Formen unserer Trainingsdaten auf der Konsole ausgeben und erkennen so, wie gross die respektiven Datensaetze sind, sowie die Form. Dies hilft uns spaeter, wenn wir die Daten aufbereiten und in eine verarbeitbaren Zustand bringen wollen.<br />
+Danach importieren wir die 10 Klassen in eine Liste und lassen in einem pie Chart ausgeben, wie haeufig diese 10 Klassen vorkommen. Anschliessend wollen wir uns auch einmal 25 Bilder sowie deren Klassennamen in einem 5x5 Grid ausgeben lassen. Hierbei wird direkt eine Herausforderung des cifar10-Datensatz deutlich: Die Bilder (im vgl. zu bspw MNIST - welches Bilder in &quot;grayscale&quot; ausgibt) sind farblich. Dies bedeutet dass unsere Datensaetze einen sog. Channel(siehe Shape eines Bildes=(32,32,3)) haben fuer jede Farbe. Jede Farbe wird hier als eine Zusammensetzung aus Rot/Gruen/Blau wiedergeben. Dies zeigt uns, dass wir bei diesem Projekt unsere Daten anpassen muessen, wie wir spaeter sehen werden.<br />
+Eine weitere Herausforderung die wir hier sehen ist, dass die Bilder doch teilweise auch fuer das menschliche Auge schwer auseinanderzuhalten sind. Wie sich ergeben hat, ist die durchschnittliche Benchmark eines Menschen, der die cifar10-Bilder kategorisiert &quot;nur&quot; mit 94% Genauigkeit angegeben. Ein Wert an dem wir uns orientieren koennen um die Ergebnisse unseres CNN spaeter einzuordnen.</p>
+
+</div>
+</div>
+</div>
 </div><div  class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
@@ -14740,6 +14776,73 @@ class="
 
 </div>
 
+</div>
+<div  class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<h2 id="2.-CNN-Architektur">2. CNN Architektur<a class="anchor-link" href="#2.-CNN-Architektur">&#182;</a></h2><p>Nun, da wir unseren Datensatz erkundet haben gilt es die Daten vorzubereiten. Wir benutzen hierfuer eine eigens entwickelte Funktion &quot;to_OneHot&quot; um die Validierungsdatensaetze in ein 0,0,1 Format zu bringen, was spaeter erkennbare Leistungsunterschiede machen wird. Ferner werden auch unser X_train und X_test Datensaetze in das richtige Format gebracht in dem wir die Daten zunaechst zum Typen float32 umwandeln. Nun wird bedacht dass es sich bei den 32x32 in 3 Channeln dargestellen cifar10 Bildern um RGB Bilder handelt bedacht und unsere gerade eben in float32 umgewandelten Datensaetze durch 255 geteilt um eine Klassifizierung fuer das Model einfacher zu machen.<br />
+Genug von der Vorbereitung der Daten, wir wollen uns nun ans eingemachte machen und unser Model definieren. Dazu benutzen wir eigens erstelle Funktionen, die entweder ein einzelnes Layer dem CNN hinzufuegen, oder gar einen ganzen Block dem Netzwerk hinzufuegen. Ich habe diesen Ansatz gewaehlt, da es spaeter sobald unser Netzwerk funktionsfaehig ist, den Prozess die &quot;optimale&quot; Architektur zu finden extrem vereinfacht.<br />
+Unsere gewaehlte Architektur sieht wie folgt aus:</p>
+<ol type="1">
+    <li>Layer Block #1</li>
+        <ol type="1">
+            <li>Batch Normalization Layer (forward)</li>
+            <li>Conv2D Layer: 32 Filter, 3x3 Kernel, ReLu</li>
+            <li>Batch Normalization Layer (forward)</li>
+            <li>Conv2D Layer: 32 Filter, 3x3 Kernel, ReLu</li>
+            <li>Max Pooling 2D Layer: Size=2x2</li>
+        </ol>
+    <li>Layer Block #2</li>
+        <ol type="1">
+            <li>Batch Normalization Layer (forward)</li>
+            <li>Conv2D Layer: 64 Filter, 3x3 Kernel, ReLu, L2 Regularizer(0.0001) Rate</li>
+            <li>Batch Normalization Layer (forward)</li>
+            <li>Conv2D Layer: 64 Filter, 3x3 Kernel, ReLu, L2 Regularizer(0.0001) Rate</li>
+            <li>Max Pooling 2D Layer: Size=2x2</li>
+        </ol>
+    <li>Single Layer</li>
+        <ol type="1">
+            <li>Batch Normalization Layer (forward)</li>
+            <li>Conv2D Layer: 128 filter, 3x3 Kernel, ReLu, L2 Regularizer(0.0001) Rate</li>
+            <li>MaxPooling 2D Layer: Size=2x2</li>
+            <li>Dropout Layer: 0.2 Rate</li>
+        </ol>
+    <li>Input Layer</li>
+        <ol type="1">
+            <li>Flatten Layer</li>
+        </ol>
+    <li>Hidden Layer</li>
+        <ol type="1">
+            <li>Dense Layer: 512 Neuronen, ReLu</li>
+            <li>Batchnormalization Layer</li>
+            <li>Dropout Layer: 0.2 Rate</li>
+            <li>Batchnormalization Layer</li>
+        </ol>
+    <li>Output Layer</li>
+        <ol type="1">
+            <li>Dense Layer: 10 Neuronen, softmax (passend zur Loss-Funktion: categorical crossentropy)</li>
+        </ol>
+</ol>
+
+</div>
+</div>
+</div>
+</div>
+<div  class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<h2 id="2.1-Trainingsfunktion">2.1 Trainingsfunktion<a class="anchor-link" href="#2.1-Trainingsfunktion">&#182;</a></h2><p>Die Netzwerk Architektur ist nun abgeschlossen und das Model muss noch compiliert und gefitted werden. Dies wird ueber eine eigene Funktion('train_cnn') ausgefuehrt. Diese erhaelt neben dem Model-Namen unsere Datensaetze. Ausserdem wird hier schon die Anzahl der Epochen (40) und die Groesse der Batches (64) festgelegt. Auch legt diese Funktion fest, dass die gpu benutzt wird um das Training des Netzwerkes zu uebernehmen. Ein weiterer Vorteil dieser Weise um das Model zu trainieren und kompilieren ist, dass wir hier den optimizer mit seinen Lernraten und dem Weight Decay direkt festlegen koennen. Fuer dieses Netzwerk wurde der RMSprop Algorithmus gewaehlt um unser Model zu optimieren. Wir haben die Lernrate als Parameter festgelegt und das Weight Decay auf 1e-6 bestimmt.<br />
+Nun ist es Zeit, unsere gewaehlte Netzwerkstruktur, in einer Main Methode festzulegen. Anschliessend rufen wir die train_cnn-Funktion auf und uebergeben unser sequentielles Model als Parameter. Zu guter Letzt rufen wir unsere Main Methode auf und bestaunen in der Output-Zelle unsere 40 Trainingsepochen. Um festzulegen ob die 40 Epochen unseren Erwartungen gerecht werden geben wir die Genauigkeit des Models aus dem Validierungsdatensatz aus um zu erkennen ob unser Model sich auch auf ein nicht gesehenen Datensatz generalisieren lasset. Diese Fehler quote ist neben den einzelnen Epochen die letzte Output-Zelle.</p>
+
+</div>
+</div>
+</div>
 </div><div  class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
