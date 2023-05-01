@@ -14597,11 +14597,10 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<h1> Arima-Model fuer eine Zeitserie - trainiert auf der GPU</h1>
-In diesem Projekt wollen wir aus dem Air Passenger Dataset eine Vorhersage der zukuenftigen Passagiere machen. Dazu importieren wir uns das DataSet aus statsmodels, fuehren einige Data Pre Processing Funktionen durch und splitten unseren Datensatz in ein Trainings- und einen Validierungsdatensatz.  
-Wir benutzen fuer unsere Operationen jedoch nicht die Standardmaessigen Libraries wie PANDAS oder sklearn, sondern wir wollen unser ARIMA Model auf der GPU trainieren, statt wie ueblich mit Hilfe der CPU. Dazu importieren wir die CuDF und CuML Library (eine Analyse und eine naehere Ausarbeitung findet sich unter auch auf dieser Website unter diesem [Link](https://hemniels.github.io/ml_notebooks/rndF-cuML_vs_SciKit.html)).  
-Wir benutzen hierzu den ebenfalls GPU faehigen scaler der CuML Library um unsere Datensaetze an das ARIMA Model anzupassen. Unter dem oben angegebenen Link finden sich auch naehre Details zu meinem verwendeten Setup.  
-Am Ende plotten wir ganz normal unsere Ergebnisse und sind gespannt ob unser ARIMA Model eine Vorhersage geben kann, wie viele Passagiere zu erwarten sind. Ausserdem werden die Zeitangaben zur Geschwindigkeit der GPU ausgegeben.
+<h1 id="Arima-Model-fuer-eine-Zeitserie---trainiert-auf-der-GPU">Arima-Model fuer eine Zeitserie - trainiert auf der GPU<a class="anchor-link" href="#Arima-Model-fuer-eine-Zeitserie---trainiert-auf-der-GPU">&#182;</a></h1><p>In diesem Projekt wollen wir aus dem Air Passenger Dataset eine Vorhersage der zukuenftigen Passagiere machen. Dazu importieren wir uns das DataSet aus statsmodels, fuehren einige Data Pre-Processing-Funktionen durch und splitten unseren Datensatz in ein Trainings- und einen Validierungsdatensatz.<br />
+Wir benutzen fuer unsere Operationen jedoch nicht die Standardmaessigen (CPU-)Libraries wie PANDAS oder sklearn, sondern wir wollen unser ARIMA Model mit GPU nahen Libraries erstellen. Dazu importieren wir die CuDF und CuML Library - eine Analyse und eine naehere Ausarbeitung findet sich unter auch auf dieser Website - <a href="https://hemniels.github.io/ml_notebooks/rndF-cuML_vs_SciKit.html">Link</a>.<br />
+Wir benutzen hierzu den ebenfalls GPU faehigen scaler der CuML Library um unsere Datensaetze an das ARIMA Model anzupassen. Unter dem oben angegebenen Link finden sich auch naehere Details zu meinem verwendeten Setup - wie Betriebssystem (Ubuntu 22.04) und GPU (RTX 3050ti Laptop).<br />
+Am Ende plotten wir ganz normal unsere Ergebnisse und sind gespannt ob unser ARIMA Model eine Vorhersage geben kann, wie viele Passagiere zu erwarten sind. Ausserdem werden die Zeitangaben zur Geschwindigkeit der GPU ausgegeben.</p>
 
 </div>
 </div>

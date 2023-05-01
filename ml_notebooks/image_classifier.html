@@ -14609,9 +14609,11 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<h2 id="Einleitung">Einleitung<a class="anchor-link" href="#Einleitung">&#182;</a></h2><p>In diesem Projekt widmen wir uns dem allseits bekannten cifar10 Datensatz. Dieser beinhaltet 60000 Bilder in 32x32 Pixel mit 10 unterschiedlichen Klassen. Dieser Datensatz ist ein guter Startpunkt im Machine Learning um eine effiziente CNN-Archtiektur zu erproben. 
-Der Ansatz den wir hier gewaehlt haben ist eine CNN-Architektur, mit mehreren Schichten. Zu Beginn wollen wir aber unseren Datensatz ergruenden und auf mehrere Weisen aufschluesseln um zu erkunden wie die Bilder denn aussehen, wie viele Klassen es gibt und vor allem wie diese Klassen % im Datensatz vorkommen.</p>
-<h3 id="Inhalt">Inhalt<a class="anchor-link" href="#Inhalt">&#182;</a></h3><ol = type"1">
+<h2> Einleitung </h2>
+In diesem Projekt widmen wir uns dem allseits bekannten cifar10 Datensatz. Dieser beinhaltet 60000 Bilder in 32x32 Pixel mit 10 unterschiedlichen Klassen. Dieser Datensatz ist ein guter Startpunkt im Machine Learning um eine effiziente CNN-Archtiektur zu erproben. 
+Der Ansatz den wir hier gewaehlt haben ist eine CNN-Architektur, mit mehreren Schichten. Zu Beginn wollen wir aber unseren Datensatz ergruenden und auf mehrere Weisen praesentieren. Um zu erkunden wie die Bilder und Formen der Daten denn aussehen, wie viele Klassen es gibt und vor allem wie diese Klassen prozentual im Datensatz vorkommen.
+<p><b><u>Inhaltsverzeichnis</b></u></p>
+<ol = type"1">
     <li>Daten Exploration</li>
     <li>Netzwerk Architektur</li>
         <ol type="1">
@@ -14628,7 +14630,7 @@ Der Ansatz den wir hier gewaehlt haben ist eine CNN-Architektur, mit mehreren Sc
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[389]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[16]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
@@ -14638,8 +14640,9 @@ Der Ansatz den wir hier gewaehlt haben ist eine CNN-Architektur, mit mehreren Sc
 <span class="kn">from</span> <span class="nn">tensorflow</span> <span class="kn">import</span> <span class="n">keras</span>
 <span class="kn">from</span> <span class="nn">tensorflow.keras</span> <span class="kn">import</span> <span class="n">regularizers</span>
 <span class="kn">from</span> <span class="nn">tensorflow.keras.datasets</span> <span class="kn">import</span> <span class="n">cifar10</span>
-<span class="kn">from</span> <span class="nn">tensorflow.keras.layers</span> <span class="kn">import</span> <span class="n">Conv2D</span><span class="p">,</span> <span class="n">MaxPooling2D</span><span class="p">,</span> <span class="n">Dropout</span><span class="p">,</span> <span class="n">DepthwiseConv2D</span><span class="p">,</span> <span class="n">BatchNormalization</span>
-<span class="kn">from</span> <span class="nn">keras.optimizers</span> <span class="kn">import</span> <span class="n">RMSprop</span>
+<span class="kn">from</span> <span class="nn">tensorflow.keras.layers</span> <span class="kn">import</span> <span class="n">Conv2D</span><span class="p">,</span> <span class="n">MaxPooling2D</span><span class="p">,</span> <span class="n">Dropout</span><span class="p">,</span> <span class="n">BatchNormalization</span>
+<span class="kn">from</span> <span class="nn">keras.preprocessing.image</span> <span class="kn">import</span> <span class="n">ImageDataGenerator</span>
+<span class="kn">from</span> <span class="nn">keras.optimizers</span> <span class="kn">import</span> <span class="n">RMSprop</span><span class="p">,</span> <span class="n">Adam</span>
 <span class="kn">from</span> <span class="nn">keras.models</span> <span class="kn">import</span> <span class="n">Sequential</span>
 <span class="kn">from</span> <span class="nn">keras.utils</span> <span class="kn">import</span> <span class="n">to_categorical</span><span class="p">,</span> <span class="n">np_utils</span>
 
@@ -14660,9 +14663,9 @@ Der Ansatz den wir hier gewaehlt haben ist eine CNN-Architektur, mit mehreren Sc
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<h2 id="1.-Daten-Exploration">1. Daten Exploration<a class="anchor-link" href="#1.-Daten-Exploration">&#182;</a></h2><p>In diesem Abschnitt widmen wir uns dem Datensatz. Zu beginn laden wir unseren cifar10-Datensatz mit einer eigenen Methode. Dies ist best practice, da wir in dem Fall, dass wir mit einem nicht lokal ausfuehrbaren/speicherbaren Datensatz arbeiten, oder in einem zukuenftigen Projekt cifar10 erneut laden moechten.<br />
-Anschliessend lassen wir auf die Formen unserer Trainingsdaten auf der Konsole ausgeben und erkennen so, wie gross die respektiven Datensaetze sind, sowie die Form. Dies hilft uns spaeter, wenn wir die Daten aufbereiten und in eine verarbeitbaren Zustand bringen wollen.<br />
-Danach importieren wir die 10 Klassen in eine Liste und lassen in einem pie Chart ausgeben, wie haeufig diese 10 Klassen vorkommen. Anschliessend wollen wir uns auch einmal 25 Bilder sowie deren Klassennamen in einem 5x5 Grid ausgeben lassen. Hierbei wird direkt eine Herausforderung des cifar10-Datensatz deutlich: Die Bilder (im vgl. zu bspw MNIST - welches Bilder in &quot;grayscale&quot; ausgibt) sind farblich. Dies bedeutet dass unsere Datensaetze einen sog. Channel(siehe Shape eines Bildes=(32,32,3)) haben fuer jede Farbe. Jede Farbe wird hier als eine Zusammensetzung aus Rot/Gruen/Blau wiedergeben. Dies zeigt uns, dass wir bei diesem Projekt unsere Daten anpassen muessen, wie wir spaeter sehen werden.<br />
+<h2 id="1.-Daten-Exploration">1. Daten Exploration<a class="anchor-link" href="#1.-Daten-Exploration">&#182;</a></h2><p>In diesem Abschnitt widmen wir uns dem Datensatz. Zu Beginn laden wir unseren cifar10-Datensatz mit einer eigenen Methode. Dies ist best practice, da wir in dem Fall, dass wir mit einem nicht lokal ausfuehrbaren/speicherbaren Datensatz arbeiten, oder in einem zukuenftigen Projekt cifar10 erneut laden moechten am besten eine Methode importieren/anpassen wollen.<br />
+Anschliessend lassen wir die Formen unserer Trainingsdaten in der Output-Zelle ausgeben und erkennen so, wie gross die respektiven Datensaetze sind, sowie deren Form. Dies hilft uns spaeter, wenn wir die Daten aufbereiten und in eine verarbeitbaren Zustand bringen wollen, Entscheidungen zu treffen die unsere Netzwerk Architektur optimiert.<br />
+Danach importieren wir die 10 Klassen in eine Liste und lassen in einem pie Chart ausgeben, wie diese 10 Klassen prozentual im Datensatz vertreten sind. Anschliessend wollen wir uns auch einmal 25 Bilder sowie deren Klassennamen in einem 5x5 Grid ausgeben lassen. Hierbei wird direkt eine Herausforderung des cifar10-Datensatz deutlich: Die Bilder (im vgl. zu bspw MNIST - welches Bilder in &quot;grayscale&quot; ausgibt) sind farblich. Dies bedeutet dass unsere Datensaetze einen sog. Channel(siehe Shape eines Bildes=(32,32,3)) haben fuer jede Farbe. Jede Farbe wird hier als eine Zusammensetzung aus Rot/Gruen/Blau wiedergeben. Dies zeigt uns, dass wir bei diesem Projekt unsere Daten anpassen muessen, wie wir spaeter sehen werden.<br />
 Eine weitere Herausforderung die wir hier sehen ist, dass die Bilder doch teilweise auch fuer das menschliche Auge schwer auseinanderzuhalten sind. Wie sich ergeben hat, ist die durchschnittliche Benchmark eines Menschen, der die cifar10-Bilder kategorisiert &quot;nur&quot; mit 94% Genauigkeit angegeben. Ein Wert an dem wir uns orientieren koennen um die Ergebnisse unseres CNN spaeter einzuordnen.</p>
 
 </div>
@@ -14673,7 +14676,7 @@ Eine weitere Herausforderung die wir hier sehen ist, dass die Bilder doch teilwe
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[390]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[17]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">load_cifar10</span><span class="p">():</span>
@@ -14783,23 +14786,22 @@ class="
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<h2 id="2.-CNN-Architektur">2. CNN Architektur<a class="anchor-link" href="#2.-CNN-Architektur">&#182;</a></h2><p>Nun, da wir unseren Datensatz erkundet haben gilt es die Daten vorzubereiten. Wir benutzen hierfuer eine eigens entwickelte Funktion &quot;to_OneHot&quot; um die Validierungsdatensaetze in ein 0,0,1 Format zu bringen, was spaeter erkennbare Leistungsunterschiede machen wird. Ferner werden auch unser X_train und X_test Datensaetze in das richtige Format gebracht in dem wir die Daten zunaechst zum Typen float32 umwandeln. Nun wird bedacht dass es sich bei den 32x32 in 3 Channeln dargestellen cifar10 Bildern um RGB Bilder handelt bedacht und unsere gerade eben in float32 umgewandelten Datensaetze durch 255 geteilt um eine Klassifizierung fuer das Model einfacher zu machen.<br />
-Genug von der Vorbereitung der Daten, wir wollen uns nun ans eingemachte machen und unser Model definieren. Dazu benutzen wir eigens erstelle Funktionen, die entweder ein einzelnes Layer dem CNN hinzufuegen, oder gar einen ganzen Block dem Netzwerk hinzufuegen. Ich habe diesen Ansatz gewaehlt, da es spaeter sobald unser Netzwerk funktionsfaehig ist, den Prozess die &quot;optimale&quot; Architektur zu finden extrem vereinfacht.<br />
-Unsere gewaehlte Architektur sieht wie folgt aus:</p>
+<h1> 2. CNN Architektur </h1>
+<p>Nun, da wir unseren Datensatz erkundet haben gilt es die Daten vorzubereiten. Wir benutzen hierfuer eine eigens entwickelte Funktion &quot;to_OneHot&quot; um die Validierungsdatensaetze in ein [1,0,1,0] Format zu bringen, was spaeter erkennbare Leistungsunterschiede machen wird. Ferner werden auch unser X_train und X_test Datensaetze in das richtige Format gebracht, in dem wir die Daten zunaechst in Type float32 umwandeln. Nun wird bedacht, dass es sich bei den 32x32, 3 Channel dargestellen cifar10 Bildern um RGB Bilder handelt und unsere gerade eben in float32 umgewandelten Datensaetze durch 255 geteilt um eine Klassifizierung fuer das Model einfacher zu machen.<br />
+Genug von der Vorbereitung der Daten, wir wollen uns nun daran machen unser Model zu definieren. Dazu benutzen wir eigens erstelle Funktionen, die entweder ein einzelnes Layer dem CNN hinzufuegen, oder gar einen ganzen Block an Layern dem Netzwerk hinzufuegen. Ich habe diesen Ansatz gewaehlt, da es spaeter, sobald unser Netzwerk funktionsfaehig ist, den Prozess die &quot;optimale&quot; Architektur zu finden extrem vereinfacht. Beispielsweise koennen wir beliebig viele, sowie grosse Layer hinzufuegen und entfernen. Sowie ganze Layerbloecke hinzufuegen. Ferner ist dies fuer Hyperparameter tuning ausgezeichnet einfach, da diese sehr einfach bearbeitet werden koennen und bspw. <a href="https://en.wikipedia.org/wiki/Regularization_(mathematics)#Regularizers_for_multitask_learning">Regularisierung</a> einfach pro Layer angepasst werden kann. Diese gezielte Kontrolle ueber unsere Netzwerk Architektur kommt uns vor allem in der main Methode zugute, da wir dort mit Hilfe unserer Funktionen ein Netzwerk nach der geplanten Architektur initialisieren koennen.</p>
+<p>Unsere gewaehlte Architektur sieht wie folgt aus:</p>
 <ol type="1">
     <li>Layer Block #1</li>
         <ol type="1">
             <li>Batch Normalization Layer (forward)</li>
-            <li>Conv2D Layer: 32 Filter, 3x3 Kernel, ReLu</li>
-            <li>Batch Normalization Layer (forward)</li>
-            <li>Conv2D Layer: 32 Filter, 3x3 Kernel, ReLu</li>
+            <li>Conv2D Layer: 32 Filter, 3x3 Kernel, ReLu, L2 Regularizer(0.0001) Rate</li>
+            <li>Conv2D Layer: 32 Filter, 3x3 Kernel, ReLu, L2 Regularizer(0.0001) Rate</li>
             <li>Max Pooling 2D Layer: Size=2x2</li>
         </ol>
     <li>Layer Block #2</li>
         <ol type="1">
             <li>Batch Normalization Layer (forward)</li>
             <li>Conv2D Layer: 64 Filter, 3x3 Kernel, ReLu, L2 Regularizer(0.0001) Rate</li>
-            <li>Batch Normalization Layer (forward)</li>
             <li>Conv2D Layer: 64 Filter, 3x3 Kernel, ReLu, L2 Regularizer(0.0001) Rate</li>
             <li>Max Pooling 2D Layer: Size=2x2</li>
         </ol>
@@ -14819,7 +14821,6 @@ Unsere gewaehlte Architektur sieht wie folgt aus:</p>
             <li>Dense Layer: 512 Neuronen, ReLu</li>
             <li>Batchnormalization Layer</li>
             <li>Dropout Layer: 0.2 Rate</li>
-            <li>Batchnormalization Layer</li>
         </ol>
     <li>Output Layer</li>
         <ol type="1">
@@ -14837,8 +14838,10 @@ Unsere gewaehlte Architektur sieht wie folgt aus:</p>
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<h2 id="2.1-Trainingsfunktion">2.1 Trainingsfunktion<a class="anchor-link" href="#2.1-Trainingsfunktion">&#182;</a></h2><p>Die Netzwerk Architektur ist nun abgeschlossen und das Model muss noch compiliert und gefitted werden. Dies wird ueber eine eigene Funktion('train_cnn') ausgefuehrt. Diese erhaelt neben dem Model-Namen unsere Datensaetze. Ausserdem wird hier schon die Anzahl der Epochen (40) und die Groesse der Batches (64) festgelegt. Auch legt diese Funktion fest, dass die gpu benutzt wird um das Training des Netzwerkes zu uebernehmen. Ein weiterer Vorteil dieser Weise um das Model zu trainieren und kompilieren ist, dass wir hier den optimizer mit seinen Lernraten und dem Weight Decay direkt festlegen koennen. Fuer dieses Netzwerk wurde der RMSprop Algorithmus gewaehlt um unser Model zu optimieren. Wir haben die Lernrate als Parameter festgelegt und das Weight Decay auf 1e-6 bestimmt.<br />
-Nun ist es Zeit, unsere gewaehlte Netzwerkstruktur, in einer Main Methode festzulegen. Anschliessend rufen wir die train_cnn-Funktion auf und uebergeben unser sequentielles Model als Parameter. Zu guter Letzt rufen wir unsere Main Methode auf und bestaunen in der Output-Zelle unsere 40 Trainingsepochen. Um festzulegen ob die 40 Epochen unseren Erwartungen gerecht werden geben wir die Genauigkeit des Models aus dem Validierungsdatensatz aus um zu erkennen ob unser Model sich auch auf ein nicht gesehenen Datensatz generalisieren lasset. Diese Fehler quote ist neben den einzelnen Epochen die letzte Output-Zelle.</p>
+<h2 id="2.1-Trainingsfunktion">2.1 Trainingsfunktion<a class="anchor-link" href="#2.1-Trainingsfunktion">&#182;</a></h2><p>Die Netzwerk Architektur ist nun abgeschlossen und das Model muss noch compiliert und gefitted werden.<br />
+Dies wird ueber eine eigene Funktion('train_cnn') ausgefuehrt. Diese erhaelt neben dem Model-Namen unsere Datensaetze als Parameter. Ausserdem wird hier schon die Anzahl der Epochen (40) und die Groesse der Batches (64) festgelegt. Auch legt diese Funktion fest, dass die gpu benutzt wird um das Training des Netzwerkes zu uebernehmen. Ein weiterer Vorteil dieser Weise um das Model zu trainieren und kompilieren ist, dass wir hier den optimizer mit seinen Lernraten und dem Weight Decay direkt festlegen koennen. Fuer dieses Netzwerk wurde der <a href="https://en.wikipedia.org/wiki/Stochastic_gradient_descent#Adam">ADAM Algorithmus</a> gewaehlt um unser Model zu optimieren. Wir haben die Lernrate als Parameter festgelegt und das Weight Decay auf 1e-4 bestimmt.<br />
+Nun ist es Zeit, unsere gewaehlte Netzwerkstruktur, in einer Main Methode festzulegen. Anschliessend rufen wir die train_cnn-Funktion auf und uebergeben unser sequentielles Model als Parameter. Zu guter Letzt rufen wir unsere Main Methode auf und bestaunen in der Output-Zelle unsere 40 Trainingsepochen.<br />
+Um festzulegen ob die 40 Epochen unseren Erwartungen gerecht werden geben wir die Genauigkeit des Models aus dem Validierungsdatensatz aus. Dadurch koennen wir erkennen, ob sich unser Netzwerk generalisieren laesst und nicht einfach nur eine gute Traininsgenauigkeit besitzt. Ausserdem bietet die Ausgabe in der Output-Zelle die Erkenntnis ob unsere Datenanpassung gut waren oder ob das Model ueber-/unterangepasst auf unseren Datensatz ist.</p>
 
 </div>
 </div>
@@ -14848,7 +14851,7 @@ Nun ist es Zeit, unsere gewaehlte Netzwerkstruktur, in einer Main Methode festzu
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[391]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[18]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Hilfsfunktionen:</span>
@@ -14865,11 +14868,21 @@ Nun ist es Zeit, unsere gewaehlte Netzwerkstruktur, in einer Main Methode festzu
 <span class="n">X_train</span> <span class="o">=</span> <span class="n">X_train</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s1">&#39;float32&#39;</span><span class="p">)</span>
 <span class="n">X_test</span>  <span class="o">=</span> <span class="n">X_test</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s1">&#39;float32&#39;</span><span class="p">)</span>
 <span class="n">X_train</span><span class="p">,</span> <span class="n">X_test</span> <span class="o">=</span> <span class="n">X_train</span> <span class="o">/</span> <span class="mi">255</span><span class="p">,</span> <span class="n">X_test</span> <span class="o">/</span> <span class="mi">255</span>
-
 <span class="n">y_train</span><span class="p">,</span> <span class="n">y_test</span> <span class="o">=</span> <span class="n">to_OneHot</span><span class="p">(</span><span class="n">y_train</span><span class="p">,</span> <span class="n">y_test</span><span class="p">)</span>
-<span class="c1">#print(y_train.shape)</span>
-<span class="c1">#print(y_test.shape)</span>
 <span class="n">input_shape</span> <span class="o">=</span> <span class="n">X_train</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span>
+
+<span class="c1">#Hier wurde versucht mit Hilfe von Data Augmentation gegen das overfitting des Models vorzugehen,</span>
+<span class="c1">#blieb leider ohne Erfolg - jedoch als Legacy Code behalten. Die Trainingsfunktion etc. werden ohne datagen genutzt.</span>
+<span class="c1">#</span>
+<span class="c1">#datagen = ImageDataGenerator(</span>
+<span class="c1">#    rotation_range=20,         </span>
+<span class="c1">#    width_shift_range=0.2,      </span>
+<span class="c1">#    height_shift_range=0.2,     </span>
+<span class="c1">#    horizontal_flip=True,       </span>
+<span class="c1">#    fill_mode=&#39;nearest&#39;         </span>
+<span class="c1">#)</span>
+<span class="c1">#datagen.fit(X_train)</span>
+<span class="c1">#train_generator = datagen.flow(X_train, y_train, batch_size=64)</span>
 
 <span class="k">def</span> <span class="nf">add_Single_Layer</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">num_filters</span><span class="p">,</span> <span class="n">kernel_size</span><span class="o">=</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="mi">3</span><span class="p">),</span> <span class="n">activation</span><span class="o">=</span><span class="s1">&#39;relu&#39;</span><span class="p">,</span> <span class="n">input_shape</span><span class="o">=</span><span class="n">input_shape</span><span class="p">):</span>
     <span class="n">model</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">BatchNormalization</span><span class="p">())</span>
@@ -14883,12 +14896,11 @@ Nun ist es Zeit, unsere gewaehlte Netzwerkstruktur, in einer Main Methode festzu
     <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_blocks</span><span class="p">):</span>
         <span class="n">model</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">BatchNormalization</span><span class="p">())</span>
         <span class="n">model</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">Conv2D</span><span class="p">(</span><span class="n">num_filters</span><span class="p">,</span> <span class="n">kernel_size</span><span class="p">,</span> <span class="n">padding</span><span class="o">=</span><span class="s1">&#39;same&#39;</span><span class="p">,</span> <span class="n">activation</span><span class="o">=</span><span class="n">activation</span><span class="p">,</span> <span class="n">kernel_regularizer</span><span class="o">=</span><span class="n">regularizers</span><span class="o">.</span><span class="n">l2</span><span class="p">(</span><span class="mf">0.0001</span><span class="p">)))</span>
-        <span class="n">model</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">BatchNormalization</span><span class="p">())</span>
         <span class="n">model</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">Conv2D</span><span class="p">(</span><span class="n">num_filters</span><span class="p">,</span> <span class="n">kernel_size</span><span class="p">,</span> <span class="n">padding</span><span class="o">=</span><span class="s1">&#39;same&#39;</span><span class="p">,</span> <span class="n">activation</span><span class="o">=</span><span class="n">activation</span><span class="p">,</span> <span class="n">kernel_regularizer</span><span class="o">=</span><span class="n">regularizers</span><span class="o">.</span><span class="n">l2</span><span class="p">(</span><span class="mf">0.0001</span><span class="p">)))</span>
         <span class="n">model</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">MaxPooling2D</span><span class="p">(</span><span class="n">pool_size</span><span class="o">=</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="mi">2</span><span class="p">),</span> <span class="n">padding</span><span class="o">=</span><span class="s1">&#39;same&#39;</span><span class="p">))</span>
     <span class="k">return</span> <span class="n">model</span>
 
-<span class="k">def</span> <span class="nf">add_fullyConnected</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">num_classes</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">input_shape</span><span class="o">=</span><span class="n">input_shape</span><span class="p">,</span> <span class="n">num_layers</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">num_neurons</span><span class="o">=</span><span class="mi">128</span><span class="p">,</span> <span class="n">activation</span><span class="o">=</span><span class="s1">&#39;relu&#39;</span><span class="p">,</span> <span class="n">dropout_rate</span><span class="o">=</span><span class="mf">0.2</span><span class="p">):</span>
+<span class="k">def</span> <span class="nf">add_fullyConnected</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">num_classes</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">input_shape</span><span class="o">=</span><span class="n">input_shape</span><span class="p">,</span> <span class="n">num_layers</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">num_neurons</span><span class="o">=</span><span class="mi">128</span><span class="p">,</span> <span class="n">activation</span><span class="o">=</span><span class="s1">&#39;relu&#39;</span><span class="p">,</span> <span class="n">dropout_rate</span><span class="o">=</span><span class="mf">0.2</span><span class="p">):</span>
     <span class="c1"># Input layer</span>
     <span class="n">model</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">Flatten</span><span class="p">(</span><span class="n">input_shape</span><span class="o">=</span><span class="n">input_shape</span><span class="p">))</span>
     <span class="c1"># Hidden layers</span>
@@ -14896,7 +14908,6 @@ Nun ist es Zeit, unsere gewaehlte Netzwerkstruktur, in einer Main Methode festzu
         <span class="n">model</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">Dense</span><span class="p">(</span><span class="n">num_neurons</span> <span class="o">*</span> <span class="mi">4</span><span class="p">,</span> <span class="n">activation</span><span class="o">=</span><span class="n">activation</span><span class="p">))</span>
         <span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">BatchNormalization</span><span class="p">()</span>
         <span class="n">model</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">Dropout</span><span class="p">(</span><span class="n">dropout_rate</span><span class="p">))</span>
-        <span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">BatchNormalization</span><span class="p">()</span>
     <span class="c1"># Output layer</span>
     <span class="n">model</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">Dense</span><span class="p">(</span><span class="n">num_classes</span><span class="p">,</span> <span class="n">activation</span><span class="o">=</span><span class="s1">&#39;softmax&#39;</span><span class="p">))</span>
     <span class="k">return</span> <span class="n">model</span>
@@ -14904,7 +14915,7 @@ Nun ist es Zeit, unsere gewaehlte Netzwerkstruktur, in einer Main Methode festzu
 <span class="k">def</span> <span class="nf">train_cnn</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">,</span> <span class="n">X_test</span><span class="p">,</span> <span class="n">y_test</span><span class="p">,</span> <span class="n">epochs</span><span class="o">=</span><span class="mi">40</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="mi">64</span><span class="p">):</span>
     <span class="k">with</span> <span class="n">tf</span><span class="o">.</span><span class="n">device</span><span class="p">(</span><span class="s1">&#39;/gpu:0&#39;</span><span class="p">):</span>
         <span class="n">weight_decay</span> <span class="o">=</span> <span class="mf">1e-4</span>
-        <span class="n">optimizer</span> <span class="o">=</span> <span class="n">RMSprop</span><span class="p">(</span><span class="n">lr</span><span class="o">=</span><span class="mf">0.001</span><span class="p">,</span> <span class="n">decay</span><span class="o">=</span><span class="n">weight_decay</span><span class="p">)</span>
+        <span class="n">optimizer</span> <span class="o">=</span> <span class="n">Adam</span><span class="p">(</span><span class="n">lr</span><span class="o">=</span><span class="mf">0.001</span><span class="p">,</span> <span class="n">decay</span><span class="o">=</span><span class="n">weight_decay</span><span class="p">)</span>
         <span class="n">model</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="n">loss</span><span class="o">=</span><span class="s1">&#39;categorical_crossentropy&#39;</span><span class="p">,</span> <span class="n">optimizer</span><span class="o">=</span><span class="n">optimizer</span><span class="p">,</span> <span class="n">metrics</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;accuracy&#39;</span><span class="p">])</span>
         <span class="n">history</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="n">batch_size</span><span class="p">,</span> <span class="n">epochs</span><span class="o">=</span><span class="n">epochs</span><span class="p">,</span> <span class="n">validation_data</span><span class="o">=</span><span class="p">(</span><span class="n">X_test</span><span class="p">,</span> <span class="n">y_test</span><span class="p">))</span>
         <span class="n">test_loss</span><span class="p">,</span> <span class="n">test_acc</span> <span class="o">=</span> <span class="n">history</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">evaluate</span><span class="p">(</span><span class="n">X_test</span><span class="p">,</span> <span class="n">y_test</span><span class="p">)</span>
@@ -14944,87 +14955,87 @@ Nun ist es Zeit, unsere gewaehlte Netzwerkstruktur, in einer Main Methode festzu
 
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain">
 <pre>Epoch 1/40
-782/782 [==============================] - 56s 70ms/step - loss: 1.4622 - accuracy: 0.4881 - val_loss: 1.3530 - val_accuracy: 0.5592
+782/782 [==============================] - 49s 62ms/step - loss: 1.3533 - accuracy: 0.5242 - val_loss: 0.9705 - val_accuracy: 0.6657
 Epoch 2/40
-782/782 [==============================] - 57s 73ms/step - loss: 0.9774 - accuracy: 0.6771 - val_loss: 1.1592 - val_accuracy: 0.6490
+782/782 [==============================] - 50s 63ms/step - loss: 0.8888 - accuracy: 0.6983 - val_loss: 0.8790 - val_accuracy: 0.7024
 Epoch 3/40
-782/782 [==============================] - 63s 81ms/step - loss: 0.8457 - accuracy: 0.7295 - val_loss: 0.8287 - val_accuracy: 0.7403
+782/782 [==============================] - 54s 70ms/step - loss: 0.7174 - accuracy: 0.7606 - val_loss: 0.7194 - val_accuracy: 0.7662
 Epoch 4/40
-782/782 [==============================] - 61s 78ms/step - loss: 0.7951 - accuracy: 0.7525 - val_loss: 0.7607 - val_accuracy: 0.7557
+782/782 [==============================] - 53s 68ms/step - loss: 0.6099 - accuracy: 0.8020 - val_loss: 0.6457 - val_accuracy: 0.7886
 Epoch 5/40
-782/782 [==============================] - 62s 79ms/step - loss: 0.7530 - accuracy: 0.7698 - val_loss: 0.8294 - val_accuracy: 0.7492
+782/782 [==============================] - 48s 61ms/step - loss: 0.5275 - accuracy: 0.8320 - val_loss: 0.6699 - val_accuracy: 0.7886
 Epoch 6/40
-782/782 [==============================] - 71s 90ms/step - loss: 0.7233 - accuracy: 0.7813 - val_loss: 0.8402 - val_accuracy: 0.7381
+782/782 [==============================] - 48s 62ms/step - loss: 0.4642 - accuracy: 0.8528 - val_loss: 0.6544 - val_accuracy: 0.7987
 Epoch 7/40
-782/782 [==============================] - 58s 75ms/step - loss: 0.6957 - accuracy: 0.7954 - val_loss: 0.7470 - val_accuracy: 0.7791
+782/782 [==============================] - 49s 63ms/step - loss: 0.4071 - accuracy: 0.8756 - val_loss: 0.6211 - val_accuracy: 0.8147
 Epoch 8/40
-782/782 [==============================] - 59s 75ms/step - loss: 0.6647 - accuracy: 0.8028 - val_loss: 0.8540 - val_accuracy: 0.7520
+782/782 [==============================] - 58s 74ms/step - loss: 0.3572 - accuracy: 0.8932 - val_loss: 0.6702 - val_accuracy: 0.8069
 Epoch 9/40
-782/782 [==============================] - 58s 75ms/step - loss: 0.6458 - accuracy: 0.8127 - val_loss: 0.6706 - val_accuracy: 0.8025
+782/782 [==============================] - 55s 71ms/step - loss: 0.3176 - accuracy: 0.9073 - val_loss: 0.6517 - val_accuracy: 0.8164
 Epoch 10/40
-782/782 [==============================] - 58s 75ms/step - loss: 0.6348 - accuracy: 0.8181 - val_loss: 0.7501 - val_accuracy: 0.7925
+782/782 [==============================] - 54s 70ms/step - loss: 0.2858 - accuracy: 0.9200 - val_loss: 0.6475 - val_accuracy: 0.8243
 Epoch 11/40
-782/782 [==============================] - 59s 75ms/step - loss: 0.6174 - accuracy: 0.8265 - val_loss: 0.8179 - val_accuracy: 0.7698
+782/782 [==============================] - 55s 71ms/step - loss: 0.2539 - accuracy: 0.9323 - val_loss: 0.6844 - val_accuracy: 0.8184
 Epoch 12/40
-782/782 [==============================] - 59s 75ms/step - loss: 0.6067 - accuracy: 0.8314 - val_loss: 0.9081 - val_accuracy: 0.7814
+782/782 [==============================] - 55s 71ms/step - loss: 0.2294 - accuracy: 0.9412 - val_loss: 0.6830 - val_accuracy: 0.8250
 Epoch 13/40
-782/782 [==============================] - 59s 75ms/step - loss: 0.5941 - accuracy: 0.8361 - val_loss: 0.7816 - val_accuracy: 0.7819
+782/782 [==============================] - 56s 72ms/step - loss: 0.2144 - accuracy: 0.9473 - val_loss: 0.7134 - val_accuracy: 0.8235
 Epoch 14/40
-782/782 [==============================] - 59s 75ms/step - loss: 0.5814 - accuracy: 0.8428 - val_loss: 0.7393 - val_accuracy: 0.7935
+782/782 [==============================] - 54s 69ms/step - loss: 0.1973 - accuracy: 0.9538 - val_loss: 0.7178 - val_accuracy: 0.8361
 Epoch 15/40
-782/782 [==============================] - 59s 75ms/step - loss: 0.5672 - accuracy: 0.8469 - val_loss: 0.6957 - val_accuracy: 0.7921
+782/782 [==============================] - 55s 70ms/step - loss: 0.1826 - accuracy: 0.9594 - val_loss: 0.7248 - val_accuracy: 0.8288
 Epoch 16/40
-782/782 [==============================] - 59s 75ms/step - loss: 0.5569 - accuracy: 0.8496 - val_loss: 0.6922 - val_accuracy: 0.8058
+782/782 [==============================] - 49s 63ms/step - loss: 0.1718 - accuracy: 0.9634 - val_loss: 0.7230 - val_accuracy: 0.8294
 Epoch 17/40
-782/782 [==============================] - 59s 75ms/step - loss: 0.5583 - accuracy: 0.8531 - val_loss: 0.8542 - val_accuracy: 0.7851
+782/782 [==============================] - 54s 69ms/step - loss: 0.1618 - accuracy: 0.9680 - val_loss: 0.7626 - val_accuracy: 0.8268
 Epoch 18/40
-782/782 [==============================] - 59s 75ms/step - loss: 0.5512 - accuracy: 0.8549 - val_loss: 0.7424 - val_accuracy: 0.8085
+782/782 [==============================] - 53s 68ms/step - loss: 0.1562 - accuracy: 0.9692 - val_loss: 0.7994 - val_accuracy: 0.8286
 Epoch 19/40
-782/782 [==============================] - 59s 75ms/step - loss: 0.5491 - accuracy: 0.8554 - val_loss: 0.9569 - val_accuracy: 0.7751
+782/782 [==============================] - 53s 68ms/step - loss: 0.1469 - accuracy: 0.9723 - val_loss: 0.7598 - val_accuracy: 0.8318
 Epoch 20/40
-782/782 [==============================] - 59s 75ms/step - loss: 0.5339 - accuracy: 0.8587 - val_loss: 0.7069 - val_accuracy: 0.8098
+782/782 [==============================] - 54s 69ms/step - loss: 0.1423 - accuracy: 0.9746 - val_loss: 0.8117 - val_accuracy: 0.8349
 Epoch 21/40
-782/782 [==============================] - 59s 75ms/step - loss: 0.5271 - accuracy: 0.8612 - val_loss: 0.8095 - val_accuracy: 0.8067
+782/782 [==============================] - 53s 67ms/step - loss: 0.1359 - accuracy: 0.9768 - val_loss: 0.8124 - val_accuracy: 0.8315
 Epoch 22/40
-782/782 [==============================] - 59s 75ms/step - loss: 0.5100 - accuracy: 0.8697 - val_loss: 0.8394 - val_accuracy: 0.7760
+782/782 [==============================] - 52s 66ms/step - loss: 0.1375 - accuracy: 0.9769 - val_loss: 0.7904 - val_accuracy: 0.8321
 Epoch 23/40
-782/782 [==============================] - 59s 75ms/step - loss: 0.5161 - accuracy: 0.8668 - val_loss: 0.6854 - val_accuracy: 0.8102
+782/782 [==============================] - 52s 67ms/step - loss: 0.1274 - accuracy: 0.9805 - val_loss: 0.8386 - val_accuracy: 0.8335
 Epoch 24/40
-782/782 [==============================] - 59s 75ms/step - loss: 0.5062 - accuracy: 0.8698 - val_loss: 0.7807 - val_accuracy: 0.7888
+782/782 [==============================] - 51s 65ms/step - loss: 0.1291 - accuracy: 0.9795 - val_loss: 0.8073 - val_accuracy: 0.8345
 Epoch 25/40
-782/782 [==============================] - 59s 75ms/step - loss: 0.4963 - accuracy: 0.8736 - val_loss: 0.7900 - val_accuracy: 0.8087
+782/782 [==============================] - 51s 66ms/step - loss: 0.1211 - accuracy: 0.9817 - val_loss: 0.8743 - val_accuracy: 0.8327
 Epoch 26/40
-782/782 [==============================] - 59s 75ms/step - loss: 0.5032 - accuracy: 0.8740 - val_loss: 0.7424 - val_accuracy: 0.8145
+782/782 [==============================] - 50s 64ms/step - loss: 0.1193 - accuracy: 0.9825 - val_loss: 0.8591 - val_accuracy: 0.8315
 Epoch 27/40
-782/782 [==============================] - 59s 75ms/step - loss: 0.4952 - accuracy: 0.8754 - val_loss: 0.7425 - val_accuracy: 0.8164
+782/782 [==============================] - 50s 64ms/step - loss: 0.1175 - accuracy: 0.9833 - val_loss: 0.9239 - val_accuracy: 0.8298
 Epoch 28/40
-782/782 [==============================] - 59s 75ms/step - loss: 0.4883 - accuracy: 0.8791 - val_loss: 0.8391 - val_accuracy: 0.7901
+782/782 [==============================] - 52s 66ms/step - loss: 0.1141 - accuracy: 0.9850 - val_loss: 0.8493 - val_accuracy: 0.8369
 Epoch 29/40
-782/782 [==============================] - 59s 75ms/step - loss: 0.4873 - accuracy: 0.8778 - val_loss: 0.7456 - val_accuracy: 0.8195
+782/782 [==============================] - 52s 67ms/step - loss: 0.1106 - accuracy: 0.9862 - val_loss: 0.8718 - val_accuracy: 0.8306
 Epoch 30/40
-782/782 [==============================] - 59s 75ms/step - loss: 0.4844 - accuracy: 0.8797 - val_loss: 0.8426 - val_accuracy: 0.7975
+782/782 [==============================] - 52s 67ms/step - loss: 0.1105 - accuracy: 0.9853 - val_loss: 0.8716 - val_accuracy: 0.8377
 Epoch 31/40
-782/782 [==============================] - 59s 75ms/step - loss: 0.4712 - accuracy: 0.8847 - val_loss: 1.0110 - val_accuracy: 0.7838
+782/782 [==============================] - 51s 65ms/step - loss: 0.1128 - accuracy: 0.9852 - val_loss: 0.8836 - val_accuracy: 0.8367
 Epoch 32/40
-782/782 [==============================] - 59s 75ms/step - loss: 0.4672 - accuracy: 0.8860 - val_loss: 0.8282 - val_accuracy: 0.8097
+782/782 [==============================] - 51s 66ms/step - loss: 0.1052 - accuracy: 0.9871 - val_loss: 0.8777 - val_accuracy: 0.8349
 Epoch 33/40
-782/782 [==============================] - 59s 75ms/step - loss: 0.4610 - accuracy: 0.8853 - val_loss: 0.7887 - val_accuracy: 0.8094
+782/782 [==============================] - 53s 68ms/step - loss: 0.1051 - accuracy: 0.9869 - val_loss: 0.8827 - val_accuracy: 0.8363
 Epoch 34/40
-782/782 [==============================] - 59s 75ms/step - loss: 0.4540 - accuracy: 0.8898 - val_loss: 0.7886 - val_accuracy: 0.8006
+782/782 [==============================] - 52s 67ms/step - loss: 0.1043 - accuracy: 0.9875 - val_loss: 0.8764 - val_accuracy: 0.8346
 Epoch 35/40
-782/782 [==============================] - 58s 75ms/step - loss: 0.4563 - accuracy: 0.8898 - val_loss: 0.8538 - val_accuracy: 0.7865
+782/782 [==============================] - 52s 67ms/step - loss: 0.0988 - accuracy: 0.9892 - val_loss: 0.8834 - val_accuracy: 0.8348
 Epoch 36/40
-782/782 [==============================] - 59s 75ms/step - loss: 0.4528 - accuracy: 0.8905 - val_loss: 1.1487 - val_accuracy: 0.7858
+782/782 [==============================] - 52s 67ms/step - loss: 0.0984 - accuracy: 0.9890 - val_loss: 0.8569 - val_accuracy: 0.8365
 Epoch 37/40
-782/782 [==============================] - 59s 75ms/step - loss: 0.4386 - accuracy: 0.8947 - val_loss: 1.1092 - val_accuracy: 0.7151
+782/782 [==============================] - 53s 68ms/step - loss: 0.0986 - accuracy: 0.9886 - val_loss: 0.8337 - val_accuracy: 0.8397
 Epoch 38/40
-782/782 [==============================] - 59s 75ms/step - loss: 0.4469 - accuracy: 0.8926 - val_loss: 0.8794 - val_accuracy: 0.8084
+782/782 [==============================] - 54s 69ms/step - loss: 0.0931 - accuracy: 0.9907 - val_loss: 0.9224 - val_accuracy: 0.8403
 Epoch 39/40
-782/782 [==============================] - 58s 75ms/step - loss: 0.4411 - accuracy: 0.8951 - val_loss: 0.8444 - val_accuracy: 0.7977
+782/782 [==============================] - 52s 66ms/step - loss: 0.0969 - accuracy: 0.9893 - val_loss: 0.8719 - val_accuracy: 0.8393
 Epoch 40/40
-782/782 [==============================] - 59s 75ms/step - loss: 0.4450 - accuracy: 0.8954 - val_loss: 0.8910 - val_accuracy: 0.7690
-313/313 [==============================] - 4s 13ms/step - loss: 0.8910 - accuracy: 0.7690
-Test accuracy: 0.7689999938011169
+782/782 [==============================] - 52s 67ms/step - loss: 0.0924 - accuracy: 0.9909 - val_loss: 0.9110 - val_accuracy: 0.8352
+313/313 [==============================] - 3s 10ms/step - loss: 0.9110 - accuracy: 0.8352
+Test accuracy: 0.8352000117301941
 </pre>
 </div>
 </div>
@@ -15040,11 +15051,10 @@ Test accuracy: 0.7689999938011169
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<h1 id="Analyse-der-Ergebnisse">Analyse der Ergebnisse<a class="anchor-link" href="#Analyse-der-Ergebnisse">&#182;</a></h1><p>Das Modell erreichte eine Trainingsgenauigkeit von 89,54% und eine Validierungsgenauigkeit von 76,90%. Dies deutet darauf hin, dass das Modell an das Trainingsdatenset überangepasst ist, da eine signifikante Leistungsabnahme auf dem Validierungsset zu verzeichnen ist.</p>
-<p>Die Verlustfunktion nahm während des Trainingsprozesses stetig ab, was darauf hinweist, dass das Modell im Laufe der Zeit lernte und sich verbesserte. Die Validierungsverluste nahmen jedoch nicht mit der gleichen Rate ab, was erneut darauf hindeutet, dass das Modell zu sehr auf die Trainingsdaten überangepasst war.</p>
-<p>Die Trainingsgenauigkeit von 89,54% ist relativ hoch, aber die Validierungsgenauigkeit von 76,90% ist nicht so beeindruckend. Dies deutet darauf hin, dass das Modell nicht gut generalisiert, wenn es auf neue Daten angewendet wird. Die Leistung könnte möglicherweise verbessert werden, indem man die Komplexität des Modells reduziert oder die Größe des Trainingsdatensatzes erhöht.</p>
-<p>Es ist erwähnenswert, dass der CIFAR10-Datensatz ein herausfordernder Datensatz ist, der 10 Klassen von Bildern mit erheblicher visueller Variabilität enthält. Eine hohe Genauigkeit auf diesem Datensatz zu erreichen, ist schwierig und eine Genauigkeit von 76,90% ist dennoch eine respektable Leistung.</p>
-<p>Zusammenfassend lässt sich sagen, dass das Modell eine relativ hohe Trainingsgenauigkeit erreicht hat, aber nicht in der Lage war, gut auf neue Daten zu generalisieren, wie durch die niedrigere Validierungsgenauigkeit belegt wird. Weitere Experimente mit verschiedenen Modellarchitekturen oder Trainingsmethoden können erforderlich sein, um die Leistung des Modells auf dem CIFAR10-Datensatz zu verbessern.</p>
+<h1 id="Analyse-der-Ergebnisse">Analyse der Ergebnisse<a class="anchor-link" href="#Analyse-der-Ergebnisse">&#182;</a></h1><p>Das Modell erreichte eine endgueltige Testgenauigkeit von 83,52%, was ein anstaendiges Ergebnis für diesen Datensatz ist. Wenn wir uns die Trainingskurve ansehen, koennen wir sehen, dass das Modell mit einer Trainingsgenauigkeit von etwa 52% beginnt und sich mit jedem Durchgang allmaehlich verbessert und schließlich eine Trainingsgenauigkeit von fast 99% erreicht. Womit immerhin im Trainingssatz ein Mensch geschlagen wird - 94% Genauigkeit. Aehnlich beginnt die Validierungsgenauigkeit bei etwa 66% und verbessert sich ebenfalls stetig, erreicht einen Hoechstwert von 83% um die 20. Epoch herum und bleibt dann konstant.</p>
+<p>Interessanterweise scheint die Validierungsgenauigkeit um die 30. Epoche herum einen leichten Rueckgang zu verzeichnen, bevor sie in den letzten Durchgaengen wieder steigt. Dies koennte ein Zeichen für Overfitting sein, aber da die endgueltige Testgenauigkeit immer noch relativ hoch ist, ist es kein großes Problem. Es wurde auch versucht , wie im Code als Legacy Code gekennzeichnet, dieses Overfitting mittels Data Augmentation Techniken zu loesen. Dies fuehrte jedoch nicht zum gewuenschten Erfolg, die Funktion wurde jedoch trotzdem im Code behalten. Um Overfitting zu bekaempfen setzt diese CNN-Architektur jedoch auf L2 Regularization, Dropout Layer sowie BatchNormalization Layer.</p>
+<p>In Bezug auf die Recheneffizienz dauerte das Training des Modells auf einem GTX 3050 TI Laptop etwa 30 Minuten, was eine angemessene Zeit fuer ein Deep-Learning-Modell dieser Groeße ist.</p>
+<p>Insgesamt laesst diese Analyse darauf schließen, dass das Modell eine solide Leistung auf dem cifar10-Datensatz erbringt und eine respektable Genauigkeit bei angemessenen Rechenressourcen erreicht. Es sind jedoch weitere Experimente und Optimierungen erforderlich, um gerade dem Problem des Overfittings auf den Grund zu gehen und eine hoehere Validierungsgenauigkeit zu erreichen. Ferner bin ich der Meinung, dass die ohnehin schon simple Netzwerk Architektur aus einem 32-Filter-Layerblock, 64-Filter-Layerblock und einem einzelnen 128-Filter-Layer weiter vereinfacht werden koennte um bessere Ergebnisse zu erzielen.</p>
 
 </div>
 </div>
