@@ -51,49 +51,27 @@
         <ul>
           <li><a href="#hero" class="active">Home</a></li>
           <li><a href="#about">About</a></li>
-          <li><a href="#services">Services</a></li>
+          <li class="dropdown"><a href="#services"><span>Services</span> <i class="bi bi-chevron-down toggle-dropdown"></i></a>
+            <ul>
+              <li><a href="html/services/service-rpa.html">RPA</a></li>
+              <li><a href="html/services/service-marketing.html">Marketing</a></li>
+              <li><a href="html/services/service-nlp.html">Artifical Intelligence</a></li>
+              <li><a href="html/services/service-infrastruktur.html">Infrastruktur - Beratung</a></li>
+            </ul>
+          </li>
           <li><a href="#team">Team</a></li>
           <li class="dropdown"><a href="#portfolio"><span>Portfolio</span> <i class="bi bi-chevron-down toggle-dropdown"></i></a>
             <ul>
-              <li><a href="#portfolio" data-filter=".filter-app">RPA</a></li>
-              <li class="dropdown"><a href="#portfolio"><span>Python</span> <i class="bi bi-chevron-down toggle-dropdown"></i></a>
-                <ul>
-                  <li><a href="#portfolio" data-filter=".filter-product">NLP</a></li>
-                </ul>
-              </li>
-              <li><a href="#portfolio" data-filter=".filter-branding">Marketing</a></li>
+              <li><a href="html/portfolio/portfolio-rpa.html">RPA</a></li>
+              <li><a href="html/portfolio/portfolio-marketing.html">Marketing</a></li>
+              <li><a href="html/portfolio/portfolio-ai.html">Artifical Intelligence</a></li>
+              <li><a href="html/portfolio/portfolio-infrastruktur.html">Infrastruktur - MS Azure</a></li>
             </ul>
           </li>
           <li><a href="#contact">Kontakt</a></li>
         </ul>
         <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
       </nav>
-      
-      <script>
-        document.addEventListener("DOMContentLoaded", function() {
-          document.querySelectorAll('a[data-filter]').forEach(function(link) {
-            link.addEventListener('click', function(event) {
-              event.preventDefault();
-              var filter = this.getAttribute('data-filter');
-              applyFilter(filter);
-            });
-          });
-        
-          function applyFilter(filter) {
-            document.querySelectorAll('.portfolio-filters li').forEach(function(button) {
-              button.classList.remove('filter-active');
-            });
-        
-            document.querySelector('.portfolio-filters li[data-filter="' + filter + '"]').classList.add('filter-active');
-        
-            var iso = new Isotope('.isotope-layout', {
-              itemSelector: '.portfolio-item',
-              layoutMode: 'masonry',
-              filter: filter
-            });
-          }
-        });
-        </script>
               
 
       <a class="btn-getstarted" href="#about">Get Started</a>
@@ -500,7 +478,7 @@
           <ul>
             <li><i class="bi bi-chevron-right"></i> <a href="#hero">Home</a></li>
             <li><i class="bi bi-chevron-right"></i> <a href="#about">About us</a></li>
-            <li><i class="bi bi-chevron-right"></i> <a href="#services">Services</a></li>
+            <li><i class="bi bi-chevron-right"></i> <a href="#contact">Kontakt</a></li>
           </ul>
         </div>
 
@@ -511,6 +489,16 @@
             <li><i class="bi bi-chevron-right"></i> <a href="html/services/service-nlp.html">AI</a></li>
             <li><i class="bi bi-chevron-right"></i> <a href="html/services/service-marketing.html">Marketing</a></li>
             <li><i class="bi bi-chevron-right"></i> <a href="html/services/service-infrastruktur.html">Infrastruktur</a></li>
+          </ul>
+        </div>
+
+        <div class="col-lg-2 col-md-3 footer-links">
+          <h4>My Portfolio</h4>
+          <ul>
+            <li><i class="bi bi-chevron-right"></i> <a href="html/portfolio/portfolio-rpa.html">Automation</a></li>
+            <li><i class="bi bi-chevron-right"></i> <a href="html/portfolio/portfolio-ai.html">Natural Language Interfaces</a></li>
+            <li><i class="bi bi-chevron-right"></i> <a href="html/portfolio/portfolio-marketing.html">Image Generation - juggernautXL</a></li>
+            <li><i class="bi bi-chevron-right"></i> <a href="html/portfolio/portfolio-infrastruktur.html">Beratungskonzept: MS Azure</a></li>
           </ul>
         </div>
 
