@@ -4,7 +4,7 @@
 <head>
   <meta charset="utf-8">
   <meta content="width=device-width, initial-scale=1.0" name="viewport">
-  <title>hemniels - portfolio - natural language Interfaces</title>
+  <title>hemniels - service - ai</title>
   <meta content="" name="description">
   <meta content="" name="keywords">
 
@@ -36,7 +36,7 @@
   ======================================================== -->
 </head>
 
-<body class="portfolio-details-page">
+<body class="service-details-page">
 
   <header id="header" class="header d-flex align-items-center sticky-top">
     <div class="container-fluid container-xl position-relative d-flex align-items-center">
@@ -47,27 +47,26 @@
         <h1 class="sitename">hemniels</h1>
       </a>
 
-
       <nav id="navmenu" class="navmenu">
         <ul>
           <li><a href="../../index.html#hero" class="active">Home</a></li>
           <li><a href="../../index.html#about">About</a></li>
           <li class="dropdown"><a href="../../index.html#services"><span>Services</span> <i class="bi bi-chevron-down toggle-dropdown"></i></a>
             <ul>
-              <li><a href="../services/service-rpa.html">RPA</a></li>
-              <li><a href="../services/service-marketing.html">Marketing</a></li>
-              <li><a href="../services/service-nlp.html">Artificial Intelligence</a></li>
-              <li><a href="../services/service-beratung.html">Beratung</a></li>
+              <li><a href="service-rpa.html">RPA</a></li>
+              <li><a href="service-marketing.html">Marketing</a></li>
+              <li><a href="service-nlp.html">Artificial Intelligence</a></li>
+              <li><a href="service-beratung.html">Beratung</a></li>
             </ul>
           </li>
           <li><a href="../../index.html#team">Team</a></li>
           <li class="dropdown"><a href="../../index.html#portfolio"><span>Portfolio</span> <i class="bi bi-chevron-down toggle-dropdown"></i></a>
             <ul>
-              <li><a href="portfolio-rpa.html">RPA</a></li>
+              <li><a href="../portfolio/portfolio-rpa.html">RPA</a></li>
               <li class="dropdown"><a href="../../index.html#portfolio"><span>Artificial Intelligence</span> <i class="bi bi-chevron-down toggle-dropdown"></i></a>
                 <ul>
-                  <li><a href="portfolio-seq2sql.html">SEQ2SQL - App</a></li>
-                  <li><a href="portfolio-swagient.html">SWAGIENT - Library</a></li>
+                  <li><a href="../portfolio/portfolio-seq2sql.html">SEQ2SQL - App</a></li>
+                  <li><a href="../portfolio/portfolio-swagient.html">SWAGIENT - Library</a></li>
                 </ul>
               </li>
             </ul>
@@ -76,6 +75,7 @@
         </ul>
         <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
       </nav>
+
       <a class="btn-getstarted" href="../../index.html#about">Get Started</a>
     </div>
   </header>
@@ -88,84 +88,55 @@
         <nav class="breadcrumbs">
           <ol>
             <li><a href="../../index.html#hero">Home</a></li>
-            <li class="current">NLI APP - SEQ2SQL</li>
+            <li class="current">Service Details</li>
           </ol>
         </nav>
-        <h1>SEQ2SQL</h1>
+        <h1>Beratung</h1>
       </div>
     </div><!-- End Page Title -->
 
-    <!-- Portfolio Details Section -->
-    <section id="portfolio-details" class="portfolio-details section">
+    <!-- Service Details Section -->
+    <section id="service-details" class="service-details section">
 
-      <div class="container" data-aos="fade-up" data-aos-delay="100">
+      <div class="container">
 
         <div class="row gy-4">
 
-          <div class="col-lg-8">
-            <div class="portfolio-details-slider swiper init-swiper">
-
-              <script type="application/json" class="swiper-config">
-                {
-                  "loop": true,
-                  "speed": 600,
-                  "autoplay": {
-                    "delay": 5000
-                  },
-                  "slidesPerView": "auto",
-                  "pagination": {
-                    "el": ".swiper-pagination",
-                    "type": "bullets",
-                    "clickable": true
-                  }
-                }
-              </script>
-
-              <div class="swiper-wrapper align-items-center">
-
-                <div class="swiper-slide">
-                  <img src="../../assets/img/portfolio/seq2sql/nlp-1.jpg" alt="">
-                </div>
-
-                <div class="swiper-slide">
-                  <img src="../../assets/img/portfolio/seq2sql/nlp-2.jpg" alt="">
-                </div>
-
-                <div class="swiper-slide">
-                  <img src="../../assets/img/portfolio/seq2sql/nlp-3.jpg" alt="">
-                </div>
-
-                <div class="swiper-slide">
-                  <img src="../../assets/img/portfolio/seq2sql/nlp-4.jpg" alt="">
-                </div>
-
-              </div>
-              <div class="swiper-pagination"></div>
+          <div class="col-lg-4" data-aos="fade-up" data-aos-delay="100">
+            <div class="services-list">
+              <a href="portfolio-dl.html">DL Library</a>
+              <a href="portfolio-llm.html">LLM Evaluation</a>
+              <a href="portfolio-infrastruktur.html">Beratung - Infrastruktur</a>
+              <a href="portfolio-fullstack.html">Fullstack Entwicklung</a>
             </div>
+
+            <h4>Infrastruktur: Vom Training zur Inference</h4>
+            <p>Baue eine robuste KI-Infrastruktur mit Expertenberatung zu MS Azure, Git und mehr.</p>
           </div>
 
-          <div class="col-lg-4">
-            <div class="portfolio-info" data-aos="fade-up" data-aos-delay="200">
-              <h3>Natural Language Interfaces</h3>
-              <ul>
-                <li><strong>Category</strong>: Artificial Intelligence</li>
-                <li><strong>Programmiersprache</strong>: Python</li>
-                <li><strong>Entwicklungsbeginn</strong>: Juli, 2024</li>
-                <li><strong>URL Link</strong>: <a href="https://github.com/hemniels/text-to-sql">Github Repo</a></li>
-              </ul>
-            </div>
-            <div class="portfolio-description" data-aos="fade-up" data-aos-delay="300">
-              <h2>Erlebe effiziente Datenverarbeitung ohne aufwendige Schulungen.</h2>
-              <p>
-                Meine Seq2SQL-App revolutioniert den Umgang mit Datenbanken, indem sie natürliche Sprache in SQL-Abfragen umwandelt. Durch die Nutzung der Leistungsfähigkeit von Python, in Kombination mit Pandas für die Datenmanipulation und NLTK für die Sprachverarbeitung, optimiert sie deinen Workflow. PyTorch sorgt für die hohe Leistung der App, indem es maschinelle Lernmodelle antreibt, die eine präzise Abfrageumwandlung gewährleisten. Die elegante Benutzeroberfläche, die mit Svelte entwickelt wurde, bietet eine intuitive und effiziente Bedienung, wodurch das Datenbankmanagement erheblich vereinfacht wird. Ob du Datenanalyst oder Entwickler bist, dieses Tool erleichtert komplexe Aufgaben und ermöglicht es dir, dich auf das Wesentliche zu konzentrieren – das Gewinnen wertvoller Erkenntnisse. Es ist die perfekte Kombination aus fortschrittlicher Technologie und benutzerfreundlichem Design.              </p>
-            </div>
+          <div class="col-lg-8" data-aos="fade-up" data-aos-delay="200">
+            <img src="../../assets/img/services/beratung.jpg" alt="" class="img-fluid services-img">
+            <h3>Beratungskonzepte für Ihre Datenpipline. Von der Hardware bis zur Software. Maßgeschneidert.</h3>
+            <p>
+              In der heutigen datengetriebenen Welt ist der Aufbau einer robusten KI-Infrastruktur entscheidend, um wettbewerbsfähig zu bleiben. Meine Beratungsdienste bieten End-to-End-Lösungen, von der anfänglichen Planung bis hin zur vollständigen Implementierung. Ich spezialisiere mich auf die Einrichtung und Optimierung von KI-Infrastrukturen mit branchenführenden Tools wie MS Azure, Git und Atlassian. Egal, ob du Skripte ausführst, Linux-Umgebungen verwaltest oder komplexe Systeme administrierst – ich stelle das nötige Fachwissen zur Verfügung, um sicherzustellen, dass deine Infrastruktur skalierbar, sicher und effizient ist. Mein maßgeschneiderter Ansatz konzentriert sich auf deine spezifischen Anforderungen und hilft dir, das volle Potenzial der KI-Technologien auszuschöpfen. Mit meiner Unterstützung kannst du eine zukunftssichere KI-Infrastruktur aufbauen, die deine Unternehmensziele unterstützt und Innovationen vorantreibt.            
+            </p>
+            <ul>
+              <li><i class="bi bi-check-circle"></i> <span>Angepasst auf Ihre Bedürfnisse der AI. Von Spracherzeugung bis Bilder Generation.</span></li>
+              <li><i class="bi bi-check-circle"></i> <span>Angepasst auf Ihr Budget: Ist Training nicht möglich wird Inferenz per Cloud API ermöglicht.</span></li>
+              <li><i class="bi bi-check-circle"></i> <span>Integrierbar und skalierbar in bestehende Infrastrukturlösungen.</span></li>
+            </ul>
+            <a href="mailto:hempelmann.niels@gmail.com">
+              Noch heute unverbindlich Kontakt aufnehmen.
+              <i class="bi bi-envelope-fill" style="font-size:20px; vertical-align:middle;"></i>
+            </a>
+            
           </div>
 
         </div>
 
       </div>
 
-    </section><!-- /Portfolio Details Section -->
+    </section><!-- /Service Details Section -->
 
   </main>
 
@@ -174,7 +145,7 @@
     <div class="container footer-top">
       <div class="row gy-4">
         <div class="col-lg-4 col-md-6 footer-about">
-          <a href="../../index.html#hero" class="d-flex align-items-center">
+          <a href="index.html" class="d-flex align-items-center">
             <span class="sitename">N. Hempelmann</span>
           </a>
           <div class="footer-contact pt-3">
@@ -185,32 +156,21 @@
         </div>
 
         <div class="col-lg-2 col-md-3 footer-links">
-          <h4>Useful Links</h4>
+          <h4>Menu</h4>
           <ul>
-            <li><i class="bi bi-chevron-right"></i> <a href="../../index.html#hero">Home</a></li>
-            <li><i class="bi bi-chevron-right"></i> <a href="../../index.html#about">About us</a></li>
-            <li><i class="bi bi-chevron-right"></i> <a href="../../index.html#contact">Kontakt</a></li>
+            <li><i class="bi bi-chevron-right"></i> <a href="#hero">Home</a></li>
+            <li><i class="bi bi-chevron-right"></i> <a href="#about">About us</a></li>
+            <li><i class="bi bi-chevron-right"></i> <a href="#contact">Kontakt</a></li>
           </ul>
         </div>
 
         <div class="col-lg-2 col-md-3 footer-links">
-          <h4>Our Services</h4>
+          <h4>Mein Portfolio</h4>
           <ul>
-            <li><i class="bi bi-chevron-right"></i> <a href="../../html/services/service-rpa.html">RPA</a></li>
-            <li><i class="bi bi-chevron-right"></i> <a href="../../html/services/service-nlp.html">AI</a></li>
-            <li><i class="bi bi-chevron-right"></i> <a href="../../html/services/service-marketing.html">Marketing</a></li>
-            <li><i class="bi bi-chevron-right"></i> <a href="../../html/services/service-beratung.html">Beratung</a></li>
-          </ul>
-        </div>
-
-        <div class="col-lg-2 col-md-3 footer-links">
-          <h4>My Portfolio</h4>
-          <ul>
-            <li><i class="bi bi-chevron-right"></i> <a href="../../html/portfolio/portfolio-rpa.html">Automation</a></li>
-            <li><i class="bi bi-chevron-right"></i> <a href="../../html/portfolio/portfolio-seq2sql.html">Natural Language Interfaces</a></li>
-            <li><i class="bi bi-chevron-right"></i> <a href="../../html/portfolio/portfolio-marketing.html">Image Generation - juggernautXL</a></li>
-            <li><i class="bi bi-chevron-right"></i> <a href="../../html/portfolio/portfolio-swagient.html">SWAGIENT</a></li>
-          </ul>
+              <li><a href="portfolio-dl.html">DL Library</a></li>
+              <li><a href="portfolio-llm.html">LLM Evaluation</a></li>
+              <li><a href="portfolio-infrastruktur.html">Beratung - Infrastruktur</a></li>
+              <li><a href="portfolio-fullstack.html">Fullstack Entwicklung</a></li>          </ul>
         </div>
 
         <div class="col-lg-4 col-md-12">
@@ -239,6 +199,7 @@
     </div>
 
   </footer>
+
 
   <!-- Scroll Top -->
   <a href="#" id="scroll-top" class="scroll-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
