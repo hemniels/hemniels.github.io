@@ -4,7 +4,7 @@
 <head>
   <meta charset="utf-8">
   <meta content="width=device-width, initial-scale=1.0" name="viewport">
-  <title>hemniels - service - natural language interfaces</title>
+  <title>hemniels - LLM evaluation</title>
   <meta content="" name="description">
   <meta content="" name="keywords">
 
@@ -49,29 +49,18 @@
 
       <nav id="navmenu" class="navmenu">
         <ul>
-          <li><a href="../../index.html#hero" class="active">Home</a></li>
-          <li><a href="../../index.html#about">About</a></li>
-          <li class="dropdown"><a href="../../index.html#services"><span>Services</span> <i class="bi bi-chevron-down toggle-dropdown"></i></a>
+          <li><a href="#hero" class="active">Home</a></li>
+          <li><a href="#about">About</a></li>
+          <li class="dropdown"><a href="#portfolio"><span>Services</span> <i class="bi bi-chevron-down toggle-dropdown"></i></a>
             <ul>
-              <li><a href="service-rpa.html">RPA</a></li>
-              <li><a href="service-marketing.html">Marketing</a></li>
-              <li><a href="service-nlp.html">Artificial Intelligence</a></li>
-              <li><a href="service-beratung.html">Beratung</a></li>
+              <li><a href="html/portfolio/portfolio-dl.html">DL Library</a></li>
+              <li><a href="html/portfolio/portfolio-llm.html">LLM Evaluation</a></li>
+              <li><a href="html/portfolio/portfolio-infrastruktur.html">Beratung - Infrastruktur</a></li>
+              <li><a href="html/portfolio/portfolio-fullstack.html">Fullstack Entwicklung</a></li>
             </ul>
           </li>
-          <li><a href="../../index.html#team">Team</a></li>
-          <li class="dropdown"><a href="../../index.html#portfolio"><span>Portfolio</span> <i class="bi bi-chevron-down toggle-dropdown"></i></a>
-            <ul>
-              <li><a href="../portfolio/portfolio-rpa.html">RPA</a></li>
-              <li class="dropdown"><a href="../../index.html#portfolio"><span>Artificial Intelligence</span> <i class="bi bi-chevron-down toggle-dropdown"></i></a>
-                <ul>
-                  <li><a href="../portfolio/portfolio-seq2sql.html">SEQ2SQL - App</a></li>
-                  <li><a href="../portfolio/portfolio-swagient.html">SWAGIENT - Library</a></li>
-                </ul>
-              </li>
-            </ul>
-          </li>
-          <li><a href="../../index.html#contact">Kontakt</a></li>
+          <li><a href="#team">Team</a></li>
+          <li><a href="#contact">Kontakt</a></li>
         </ul>
         <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
       </nav>
@@ -109,24 +98,32 @@
               <a href="portfolio-fullstack.html">Fullstack Entwicklung</a>
             </div>
 
-            <h4>Bringe deine Agenten und LLMS auf das nächste Level</h4>
-            <p>Mit meinem Evaluations Konzept und custom Reinforcement Environments.</p>
+            <h4>LLM Evaluation & Agent Optimization</h4>
+            <p>
+              Messbare Qualität für Retrieval-Systeme,
+              Agenten und Large Language Models.
+              Von automatisierten Evaluationspipelines
+              bis zu spezialisierten Reinforcement-Learning-
+              Umgebungen.
+            </p>
           </div>
 
-          <div class="col-lg-8" data-aos="fade-up" data-aos-delay="200">
-            <h3>LLM Evaluation</h3>
+          <div class="col-lg-8">
+            <h4>LLM Evaluation Sandbox</h4>
             <p>
-              Wenn Sie in Ihrem Unternehmen LLMs und Agenten einsetzen dann ist es wichtig sicherzugehen, dass die automatisierten Workflows auch einwandfrei und hochqualitative Ergebnisse erstellen.
-              Mit meiner Expertise und meiner akademischen Erfahrung im Bereich der Computerlinguistik konnte ich dazu bereits einige wichtige Probleme lösen. So wurde mein Paper zu Named Entity Recognition mit einer 1,0 bewertet.
-              Ein Vorteil der automatisierten Evaluation ist es die Qualität der Antworten zu verbessern. Dabei kommen technologien wie RAG, aber auch Reinforcement Learning mit meiner custom Library zum Einsatz.
+              Simulation einer automatisierten Bewertung von LLM-Antworten
+              anhand typischer Qualitätsmetriken wie Faithfulness und Relevance.
             </p>
-            <o>
-              Dabei setze ich nicht nur auf Technologien wie RAG, sondern bin mit meiner Software auch in der Lage spezialisierte Reinforcement Learning Environemtns zu erstellen um ihre Dokumenten und Softwareautomation zu verbessern.
-            </o>
+            <div class="card shadow-sm p-3">
+              <button class="btn btn-primary mb-3" id="evaluateBtn">
+                Generate Evaluation
+              </button>
+              <div id="llmResponse" class="mb-3"></div>
+              <div id="evalBars"></div>
+            </div>
           </div>
 
         </div>
-
       </div>
 
     </section><!-- /Service Details Section -->
@@ -143,7 +140,6 @@
           </a>
           <div class="footer-contact pt-3">
             <p>Münster, NRW. Germany</p>
-            <p class="mt-3"><strong>Phone:</strong> <span>Auf Anfrage!</span></p>
             <p><strong>Email:</strong> <span>hempelmann.niels@gmail.com</span></p>
           </div>
         </div>
@@ -213,6 +209,249 @@
   <!-- Main JS File -->
   <script src="../../assets/js/main.js"></script>
 
+
+<script>
+
+const samples = [
+  {
+    prompt: "What is the use of AI in business?",
+    text: "AI improves business processes through automation and decision support.",
+    faithfulness: 92,
+    relevance: 88,
+    completeness: 81,
+    hallucination: 10
+  },
+  {
+    prompt: "Give examples what LLMs do for workflow automation.",
+    text: "LLMs enable retrieval, summarization and workflow automation in enterprise systems.",
+    faithfulness: 87,
+    relevance: 84,
+    completeness: 79,
+    hallucination: 18
+  },
+  {
+    prompt: "What is the benefit of Machine Learning models?",
+    text: "Machine learning models identify patterns in structured and unstructured data.",
+    faithfulness: 94,
+    relevance: 91,
+    completeness: 86,
+    hallucination: 8
+  },
+
+  {
+    prompt: "What causes rain?",
+    text: "Rain forms when water vapor condenses into droplets in clouds and becomes heavy enough to fall.",
+    faithfulness: 96,
+    relevance: 92,
+    completeness: 88,
+    hallucination: 5
+  },
+  {
+    prompt: "Why do we have seasons?",
+    text: "Seasons are caused by the tilt of the Earth's axis as it orbits the Sun.",
+    faithfulness: 97,
+    relevance: 93,
+    completeness: 90,
+    hallucination: 4
+  },
+  {
+    prompt: "What is the capital of France?",
+    text: "The capital of France is Paris.",
+    faithfulness: 99,
+    relevance: 98,
+    completeness: 100,
+    hallucination: 1
+  },
+  {
+    prompt: "How does photosynthesis work?",
+    text: "Plants convert sunlight, water and carbon dioxide into glucose and oxygen.",
+    faithfulness: 95,
+    relevance: 94,
+    completeness: 89,
+    hallucination: 6
+  },
+  {
+    prompt: "What is gravity?",
+    text: "Gravity is a force that attracts objects with mass toward each other.",
+    faithfulness: 96,
+    relevance: 92,
+    completeness: 87,
+    hallucination: 5
+  },
+  {
+    prompt: "What is the largest ocean on Earth?",
+    text: "The Pacific Ocean is the largest ocean on Earth.",
+    faithfulness: 99,
+    relevance: 97,
+    completeness: 98,
+    hallucination: 1
+  },
+  {
+    prompt: "How many continents are there?",
+    text: "There are seven continents on Earth.",
+    faithfulness: 98,
+    relevance: 96,
+    completeness: 95,
+    hallucination: 2
+  },
+
+  {
+    prompt: "Why do leaves change color?",
+    text: "Leaves change color because of chemical changes, though exact processes are sometimes simplified in explanations.",
+    faithfulness: 78,
+    relevance: 80,
+    completeness: 74,
+    hallucination: 20
+  },
+  {
+    prompt: "What is the speed of sound?",
+    text: "The speed of sound depends on the medium and conditions, and is often around 300–350 m/s in air.",
+    faithfulness: 82,
+    relevance: 79,
+    completeness: 76,
+    hallucination: 18
+  },
+  {
+    prompt: "What is a democracy?",
+    text: "A democracy is a system where people participate in decision making through voting or representation.",
+    faithfulness: 80,
+    relevance: 85,
+    completeness: 78,
+    hallucination: 17
+  },
+
+  {
+    prompt: "Who discovered electricity?",
+    text: "Electricity was discovered by Nikola Tesla in a single experiment involving lightning capture.",
+    faithfulness: 40,
+    relevance: 55,
+    completeness: 45,
+    hallucination: 65
+  },
+  {
+    prompt: "What is the capital of Australia?",
+    text: "The capital of Australia is Sydney, which was chosen due to its coastal importance.",
+    faithfulness: 35,
+    relevance: 60,
+    completeness: 50,
+    hallucination: 70
+  },
+  {
+    prompt: "How many planets are in the solar system?",
+    text: "There are 12 planets in the solar system including Pluto, Ceres and Eris as full planets.",
+    faithfulness: 30,
+    relevance: 50,
+    completeness: 40,
+    hallucination: 75
+  },
+  {
+    prompt: "What is the tallest mountain in the world?",
+    text: "The tallest mountain is Mount Kilimanjaro, which rises higher than Everest when measured from base to peak.",
+    faithfulness: 38,
+    relevance: 58,
+    completeness: 42,
+    hallucination: 68
+  },
+  {
+    prompt: "What is the human lifespan?",
+    text: "Humans naturally live up to 200–250 years under normal biological conditions.",
+    faithfulness: 25,
+    relevance: 45,
+    completeness: 30,
+    hallucination: 80
+  },
+
+  {
+    prompt: "What is the water cycle?",
+    text: "The water cycle describes the continuous movement of water through evaporation, condensation and precipitation.",
+    faithfulness: 96,
+    relevance: 93,
+    completeness: 89,
+    hallucination: 5
+  },
+  {
+    prompt: "What is an earthquake?",
+    text: "An earthquake is the shaking of the Earth's surface caused by movement of tectonic plates.",
+    faithfulness: 97,
+    relevance: 94,
+    completeness: 90,
+    hallucination: 4
+  },
+  {
+    prompt: "Why is the sky blue?",
+    text: "The sky appears blue due to Rayleigh scattering of sunlight in the atmosphere.",
+    faithfulness: 95,
+    relevance: 92,
+    completeness: 88,
+    hallucination: 6
+  },
+  {
+    prompt: "What is photosynthesis used for?",
+    text: "Photosynthesis allows plants to produce energy by converting sunlight into chemical energy.",
+    faithfulness: 94,
+    relevance: 91,
+    completeness: 87,
+    hallucination: 7
+  },
+  {
+    prompt: "What is the main language spoken in Japan?",
+    text: "The main language spoken in Japan is Japanese.",
+    faithfulness: 99,
+    relevance: 98,
+    completeness: 100,
+    hallucination: 1
+  },
+  {
+    prompt: "What is the boiling point of water?",
+    text: "Water boils at 100°C at standard atmospheric pressure.",
+    faithfulness: 98,
+    relevance: 96,
+    completeness: 95,
+    hallucination: 2
+  }
+];
+
+  function bar(label, value, color="primary") {
+
+    return `
+      <div class="mb-2">
+        <div class="d-flex justify-content-between">
+          <small>${label}</small>
+          <small>${value}%</small>
+        </div>
+
+        <div class="progress">
+          <div class="progress-bar bg-${color}"
+              style="width:${value}%">
+          </div>
+        </div>
+      </div>
+    `;
+  }
+
+  document.getElementById("evaluateBtn")
+  .addEventListener("click", () => {
+
+    const s =
+      samples[Math.floor(Math.random() * samples.length)];
+
+    document.getElementById("llmResponse").innerHTML = `
+      <strong>Input Prompt: </strong> "${s.prompt}"
+      <p class="mt-2"><strong>Generated output: </strong>"<i>${s.text}</i>"</p>
+    `;
+
+    document.getElementById("evalBars").innerHTML = `
+
+      ${bar("Faithfulness", s.faithfulness)}
+      ${bar("Relevance", s.relevance)}
+      ${bar("Completeness", s.completeness)}
+      ${bar("Hallucination Risk", s.hallucination, "danger")}
+
+    `;
+
+  });
+
+  </script>
 </body>
 
 </html>
